@@ -1,0 +1,74 @@
+# ============================================
+# CardioFusion - ML Heart Disease Prediction
+# ============================================
+#
+# Installation:
+#   pip install -r requirements.txt
+#
+# Note: This project uses local datasets. Place your cardiovascular
+# disease dataset in data/raw/ directory before running preprocessing.
+#
+# For development with testing tools:
+#   pip install pytest pytest-cov black flake8 isort mypy
+# ============================================
+
+# Core Data Science Libraries
+# --------------------------------------------
+pandas>=2.0.0,<3.0.0          # Data manipulation and analysis
+numpy>=1.24.0,<2.0.0          # Numerical computing
+scipy>=1.10.0,<2.0.0          # Scientific computing
+
+# Machine Learning - Traditional Algorithms
+# --------------------------------------------
+scikit-learn>=1.3.0,<2.0.0    # ML algorithms and utilities
+imbalanced-learn>=0.11.0      # Handling imbalanced datasets (SMOTE)
+joblib>=1.3.0                 # Model serialization
+
+# Advanced Machine Learning Models
+# --------------------------------------------
+xgboost>=2.0.0                # Gradient boosting framework
+lightgbm>=4.0.0               # Light gradient boosting machine
+
+# Deep Learning Frameworks
+# --------------------------------------------
+tensorflow>=2.15.0,<3.0.0     # Deep learning framework
+keras>=3.0.0                  # High-level neural networks API
+
+# Model Explainability & Interpretability
+# --------------------------------------------
+shap>=0.44.0                  # SHAP values for model explanation
+
+# Data Visualization
+# --------------------------------------------
+matplotlib>=3.7.0,<4.0.0      # Static plotting
+seaborn>=0.12.0,<1.0.0        # Statistical data visualization
+plotly>=5.18.0                # Interactive visualizations
+
+# Web Application Framework
+# --------------------------------------------
+streamlit>=1.29.0             # Interactive web application
+streamlit-option-menu>=0.3.6  # Navigation menu for Streamlit
+
+# Jupyter Notebooks & Interactive Development
+# --------------------------------------------
+jupyter>=1.0.0                # Jupyter notebook interface
+ipywidgets>=8.1.0             # Interactive widgets
+notebook>=7.0.0               # Jupyter notebook server
+ipykernel>=6.25.0             # IPython kernel for Jupyter
+
+# Utilities & Helper Libraries
+# --------------------------------------------
+python-dotenv>=1.0.0          # Environment variable management
+tqdm>=4.66.0                  # Progress bars
+pillow>=10.0.0                # Image processing
+python-dateutil>=2.8.2        # Date utilities
+pytz>=2023.3                  # Timezone definitions
+
+# Development Tools (Optional - Install separately for development)
+# --------------------------------------------
+# pytest>=7.4.0               # Testing framework
+# pytest-cov>=4.1.0           # Coverage reporting
+# black>=23.0.0               # Code formatter
+# flake8>=6.0.0               # Linting
+# isort>=5.12.0               # Import sorting
+# mypy>=1.5.0                 # Static type checking

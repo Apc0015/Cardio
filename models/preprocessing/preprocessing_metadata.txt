@@ -1,0 +1,13 @@
+CardioFusion Preprocessing Metadata
+========================================
+
+original_shape: (308854, 19)
+cleaned_shape: (308774, 19)
+final_shape: (567606, 28)
+features_created: ['Age_Numeric', 'BMI_Category', 'Lifestyle_Risk_Score', 'Health_Conditions_Count']
+feature_names: ['Height_(cm)', 'Weight_(kg)', 'BMI', 'Alcohol_Consumption', 'Fruit_Consumption', 'Green_Vegetables_Consumption', 'FriedPotato_Consumption', 'Age_Numeric', 'Lifestyle_Risk_Score', 'Health_Conditions_Count', 'General_Health_Encoded', 'Age_Category_Encoded', 'BMI_Category_Encoded', 'Checkup_Never', 'Checkup_Within the past 2 years', 'Checkup_Within the past 5 years', 'Checkup_Within the past year', 'Exercise_Yes', 'Skin_Cancer_Yes', 'Other_Cancer_Yes', 'Depression_Yes', 'Diabetes_No, pre-diabetes or borderline diabetes', 'Diabetes_Yes', 'Diabetes_Yes, but female told only during pregnancy', 'Arthritis_Yes', 'Sex_Male', 'Smoking_History_Yes']
+target_encoding: {'No': np.int64(0), 'Yes': np.int64(1)}
+smote_applied: True
+class_balance: {'original': {np.int64(0): 283803, np.int64(1): 24971}, 'after_smote': {np.int64(0): 283803, np.int64(1): 283803}}
+ordinal_mappings: {'General_Health': ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'], 'Age_Category': ['18-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '65-69', '70-74', '75-79', '80+'], 'BMI_Category': ['Underweight', 'Normal', 'Overweight', 'Obese']}
+files_created: ['data/processed/CVD_Cleaned.csv', 'data/processed/train_data.csv', 'data/processed/test_data.csv', 'models/preprocessing/label_encoder.pkl', 'models/preprocessing/scaler.pkl']
