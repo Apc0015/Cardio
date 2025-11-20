@@ -586,7 +586,7 @@ jupyter notebook notebooks/advanced_models.ipynb
 
 If you encounter issues not covered above:
 
-1. Check existing [GitHub Issues](https://github.com/Taylor-Hunter/CardioFusion/issues)
+1. Check existing [GitHub]
 2. Search for error messages in the documentation
 3. Ensure you're using Python 3.8+ and have all dependencies installed
 4. Try cleaning and reinstalling:
@@ -628,7 +628,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- **Taylor Hunter** - *Initial work*
+- **Taylor Hunter and Ayush Chhoker ** - *Initial work*
 - **CardioFusion Development Team**
 
 ---
@@ -642,12 +642,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-## 📞 Support
 
-- 📧 Email: [Create an issue on GitHub](https://github.com/Taylor-Hunter/CardioFusion/issues)
-- 📖 Documentation: See this README and inline code comments
-- 🐛 Bug Reports: [GitHub Issues](https://github.com/Taylor-Hunter/CardioFusion/issues)
 
 ---
 
-**Built with ❤️ for better cardiovascular health outcomes**
