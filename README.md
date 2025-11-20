@@ -20,8 +20,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/Taylor-Hunter/CardioFusion.git
-cd CardioFusion
+git clone https://github.com/Apc0015/Cardio.git
+cd Cardio
 
 # Create and activate virtual environment
 python3 -m venv venv
@@ -30,17 +30,8 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Place your dataset in data/raw/ directory
-# Expected file: cardio_train.csv or similar cardiovascular disease dataset
-
-# Run preprocessing
-make preprocess
-
-# Train models
-make train
-
-# Run the web application
-make run
+# Run the web application (models and data are included)
+streamlit run src/app.py
 ```
 
 Visit http://localhost:8501 to access the CardioFusion web interface.
