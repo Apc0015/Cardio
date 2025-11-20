@@ -33,7 +33,7 @@ class SHAPExplainer:
         self.explainer = self._create_explainer()
 
     def _create_explainer(self):
-        """Create appropriate SHAP explainer for model type"""
+        """Create appropriate SHAP explainer for model type - optimized for speed"""
         model_type = type(self.model).__name__
 
         try:
@@ -42,13 +42,14 @@ class SHAPExplainer:
             elif 'XGBoost' in model_type or 'LightGBM' in model_type:
                 return shap.TreeExplainer(self.model)
             else:
-                # Use KernelExplainer for other models (slower but universal)
-                background_sample = shap.sample(self.background_data, min(100, len(self.background_data)))
+                # Use KernelExplainer with smaller sample for faster computation
+                background_sample = shap.sample(self.background_data, min(50, len(self.background_data)))
                 return shap.KernelExplainer(self.model.predict_proba, background_sample)
         except Exception as e:
             print(f"⚠️ Creating explainer: {e}")
-            # Fallback to Kernel explainer
-            background_sample = shap.sample(self.background_data, 50)
+            # Fallback to Kernel explainer with minimal sample
+            background_sample = shap.sample(self.background_data, 30)
+            return shap.KernelExplainer(self.model.predict_proba, background_sample)
             return shap.KernelExplainer(self.model.predict_proba, background_sample)
 
     def explain_prediction(self,

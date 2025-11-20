@@ -211,15 +211,16 @@ def load_models():
 
 @st.cache_data
 def load_background_data():
-    """Load background data for SHAP"""
+    """Load background data for SHAP - optimized for speed"""
     try:
         # Get project root directory
         project_root = Path(__file__).parent.parent
         train_data_path = project_root / 'data' / 'processed' / 'train_data.csv'
-        train_data = pd.read_csv(train_data_path)
+        # Only load first 1000 rows for faster loading
+        train_data = pd.read_csv(train_data_path, nrows=1000)
         X_train = train_data.drop('Heart_Disease', axis=1)
-        # Sample for SHAP background
-        return X_train.sample(min(100, len(X_train)), random_state=42)
+        # Sample for SHAP background - reduced sample size
+        return X_train.sample(min(50, len(X_train)), random_state=42)
     except:
         return None
 
@@ -518,30 +519,30 @@ def render_detailed_prediction(prediction, input_data):
 
     st.divider()
 
-    # SHAP explanation
+    # SHAP explanation - make it optional for faster loading
     if st.session_state.background_data is not None:
-        try:
-            st.markdown("### 🔍 AI Explainability Analysis")
-            with st.spinner("Generating SHAP explanation..."):
-                # Get best model for SHAP
-                model = list(st.session_state.predictor.models.values())[0]
-                explainer = SHAPExplainer(model, st.session_state.background_data)
-                explanation = explainer.explain_prediction(input_data)
+        with st.expander("🔍 View AI Explainability Analysis (SHAP)", expanded=False):
+            try:
+                with st.spinner("Generating SHAP explanation..."):
+                    # Get best model for SHAP
+                    model = list(st.session_state.predictor.models.values())[0]
+                    explainer = SHAPExplainer(model, st.session_state.background_data)
+                    explanation = explainer.explain_prediction(input_data)
 
-                if 'error' not in explanation:
-                    render_feature_contributions(explanation)
+                    if 'error' not in explanation:
+                        render_feature_contributions(explanation)
 
-                    st.divider()
+                        st.divider()
 
-                    # Clinical recommendations
-                    st.markdown("### 💡 Clinical Recommendations")
-                    recommendations = explainer.get_recommendations(explanation)
+                        # Clinical recommendations
+                        st.markdown("### 💡 Clinical Recommendations")
+                        recommendations = explainer.get_recommendations(explanation)
 
-                    for i, rec in enumerate(recommendations, 1):
-                        st.markdown(f"{i}. {rec}")
+                        for i, rec in enumerate(recommendations, 1):
+                            st.markdown(f"{i}. {rec}")
 
-        except Exception as e:
-            st.warning(f"SHAP analysis unavailable: {str(e)}")
+            except Exception as e:
+                st.warning(f"SHAP analysis unavailable: {str(e)}")
 
 def render_disclaimer():
     """Render medical disclaimer"""
@@ -568,11 +569,22 @@ def main():
     # Initialize session state
     init_session_state()
 
-    # Load models
+    # Load models with progress indication
     if st.session_state.predictor is None:
-        with st.spinner("🔄 Loading ML models..."):
-            st.session_state.predictor = load_models()
-            st.session_state.background_data = load_background_data()
+        progress_text = st.empty()
+        progress_bar = st.progress(0)
+        
+        progress_text.text("🔄 Loading ML models...")
+        progress_bar.progress(30)
+        st.session_state.predictor = load_models()
+        
+        progress_bar.progress(70)
+        progress_text.text("📊 Loading background data...")
+        st.session_state.background_data = load_background_data()
+        
+        progress_bar.progress(100)
+        progress_text.empty()
+        progress_bar.empty()
 
     # Render UI
     render_header()
