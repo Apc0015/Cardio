@@ -12,11 +12,13 @@
 - 🔍 **SHAP Explainability** - Visual explanations of prediction factors
 - 📈 **Comprehensive Analytics** - Detailed model performance metrics and visualizations
 - 🧪 **Jupyter Notebooks** - Complete workflow from data preprocessing to model training
-- ⚡ **Production Ready** - Docker support, environment management, and automated workflows
+- ⚡ **Production Ready** - Streamlit Cloud deployment, environment management, and automated workflows
 
 ---
 
 ## 🚀 Quick Start
+
+### Local Development
 
 ```bash
 # Clone the repository
@@ -34,7 +36,15 @@ pip install -r requirements.txt
 streamlit run src/app.py
 ```
 
-Visit http://localhost:8501 to access the CardioFusion web interface.
+Visit **http://localhost:8501** to access the CardioFusion web interface.
+
+### Streamlit Cloud Deployment
+
+1. Fork this repository to your GitHub account
+2. Visit [Streamlit Cloud](https://share.streamlit.io)
+3. Click "New app" and select your forked repository
+4. Set main file path: `src/app.py`
+5. Deploy! Your app will be live at `https://your-app.streamlit.app`
 
 ---
 
@@ -134,12 +144,12 @@ The final cleaned dataset is saved as **`cleaned_data.csv`** for model training.
 - **Git** for version control
 - **Dataset** - Cardiovascular disease dataset (CSV format)
 
-### Option 1: Standard Installation
+### Option 1: Standard Installation (Recommended)
 
 ```bash
 # Clone the repository
-git clone https://github.com/Taylor-Hunter/CardioFusion.git
-cd CardioFusion
+git clone https://github.com/Apc0015/Cardio.git
+cd Cardio
 
 # Create virtual environment
 python3 -m venv venv
@@ -166,7 +176,7 @@ conda activate cardiofusion
 pip install -r requirements.txt
 ```
 
-### Option 3: Using Makefile (Recommended)
+### Option 3: Using Makefile
 
 ```bash
 # Complete setup with one command
@@ -336,8 +346,6 @@ make test           # Run tests
 make lint           # Run code linting
 make format         # Format code with black
 make clean          # Clean temporary files
-make docker-build   # Build Docker image
-make docker-run     # Run in Docker container
 ```
 
 ---
@@ -478,20 +486,32 @@ isort src/ scripts/ tests/
 flake8 src/ scripts/ tests/
 ```
 
-### Docker Deployment
+### Streamlit Cloud Deployment
 
-```bash
-# Build Docker image
-make docker-build
+**Deploy to Streamlit Cloud in 3 steps:**
 
-# Run container
-make docker-run
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
 
-# Application will be available at http://localhost:8501
+2. **Deploy on Streamlit Cloud**
+   - Visit [share.streamlit.io](https://share.streamlit.io)
+   - Click "New app"
+   - Select your repository: `Apc0015/Cardio`
+   - Main file path: `src/app.py`
+   - Click "Deploy"
 
-# Stop container
-make docker-stop
-```
+3. **Access Your App**
+   - Your app will be live at: `https://your-app-name.streamlit.app`
+   - Automatic updates when you push to GitHub
+
+**Configuration:**
+- `requirements.txt` - Python dependencies (automatically installed)
+- `packages.txt` - System packages (automatically installed)
+- `.streamlit/config.toml` - App configuration
 
 ## 🔧 Troubleshooting
 
@@ -628,7 +648,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- **Taylor Hunter and Ayush Chhoker ** - *Initial work*
+- **Ayush Chhoker** - *Primary Developer*
 - **CardioFusion Development Team**
 
 ---
@@ -641,6 +661,22 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - CDC for cardiovascular health indicators
 
 ---
+
+## 🌐 Deployment
+
+### Streamlit Cloud (Recommended)
+- **Free hosting** for public repositories
+- **Automatic updates** on git push
+- **Built-in SSL** and custom domains
+- Visit: [share.streamlit.io](https://share.streamlit.io)
+
+### Local Development
+```bash
+streamlit run src/app.py
+```
+
+---
+
 
 
 
