@@ -496,37 +496,102 @@ def render_simple_prediction(prediction):
     st.plotly_chart(render_risk_gauge(risk_pct, category, emoji, color), use_container_width=True)
 
 def render_detailed_prediction(prediction, input_data):
-    """Render detailed prediction with SHAP analysis"""
+    """Render detailed prediction with multi-tab analysis"""
+
+    # Import new feature modules
+    from src.features.what_if_analysis import render_what_if_analysis
+    from src.features.patient_insights import render_patient_insights
+    from src.features.reports import render_reports_page
+    from src.features.education import render_education_hub
 
     # Simple view first
     render_simple_prediction(prediction)
 
     st.divider()
 
-    # Individual model predictions
-    if 'individual_models' in prediction:
-        st.markdown("### 🤖 Individual Model Predictions")
+    # Create tabs for different analysis views
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "🤖 Model Details",
+        "🎯 What-If Analysis",
+        "📊 Risk Insights",
+        "📄 Reports",
+        "🔍 AI Explainability",
+        "📚 Education"
+    ])
 
-        models_df = pd.DataFrame([
-            {
-                'Model': name,
-                'Risk Probability': f"{results['probability_disease']*100:.1f}%",
-                'Weight': results['weight']
-            }
-            for name, results in prediction['individual_models'].items()
-        ])
+    with tab1:
+        st.markdown("### Individual Model Predictions")
 
-        st.dataframe(models_df, use_container_width=True, hide_index=True)
+        # Individual model predictions
+        if 'individual_models' in prediction:
+            models_df = pd.DataFrame([
+                {
+                    'Model': name,
+                    'Risk Probability': f"{results['probability_disease']*100:.1f}%",
+                    'Weight': results['weight']
+                }
+                for name, results in prediction['individual_models'].items()
+            ])
 
-    st.divider()
+            st.dataframe(models_df, use_container_width=True, hide_index=True)
 
-    # SHAP explanation - make it optional for faster loading
-    if st.session_state.background_data is not None:
-        with st.expander("🔍 View AI Explainability Analysis (SHAP)", expanded=False):
+            st.divider()
+
+            # Show ensemble calculation
+            st.markdown("### 📊 How Ensemble Works")
+            st.info("""
+            The final risk prediction is a **weighted average** of all individual models.
+            Better-performing models receive higher weights in the final prediction.
+
+            This ensemble approach provides more reliable predictions than any single model.
+            """)
+
+    with tab2:
+        # Get patient data from session state (you'll need to pass this)
+        if 'patient_data' in st.session_state:
+            render_what_if_analysis(
+                st.session_state.predictor,
+                input_data,
+                st.session_state.patient_data,
+                prediction
+            )
+        else:
+            st.warning("Patient data not available for What-If analysis")
+
+    with tab3:
+        if 'patient_data' in st.session_state:
+            render_patient_insights(
+                prediction,
+                st.session_state.patient_data,
+                st.session_state.predictor
+            )
+        else:
+            st.warning("Patient data not available for insights")
+
+    with tab4:
+        if 'patient_data' in st.session_state:
+            render_reports_page(
+                prediction,
+                st.session_state.patient_data,
+                input_data,
+                st.session_state.predictor
+            )
+        else:
+            st.warning("Patient data not available for reports")
+
+    with tab5:
+        st.markdown("### 🔍 AI Explainability (SHAP Analysis)")
+
+        # SHAP explanation
+        if st.session_state.background_data is not None:
             try:
                 with st.spinner("Generating SHAP explanation..."):
                     # Get best model for SHAP
                     model = list(st.session_state.predictor.models.values())[0]
+                    model_name = list(st.session_state.predictor.models.keys())[0]
+
+                    st.info(f"📊 Using {model_name} for SHAP analysis...")
+
                     explainer = SHAPExplainer(model, st.session_state.background_data)
                     explanation = explainer.explain_prediction(input_data)
 
@@ -541,9 +606,18 @@ def render_detailed_prediction(prediction, input_data):
 
                         for i, rec in enumerate(recommendations, 1):
                             st.markdown(f"{i}. {rec}")
+                    else:
+                        st.error(f"❌ SHAP Error: {explanation.get('error', 'Unknown error')}")
 
             except Exception as e:
-                st.warning(f"SHAP analysis unavailable: {str(e)}")
+                st.error(f"❌ SHAP analysis failed: {str(e)}")
+                import traceback
+                st.code(traceback.format_exc())
+        else:
+            st.warning("⚠️ SHAP explainability not available - background data could not be loaded")
+
+    with tab6:
+        render_education_hub()
 
 def render_disclaimer():
     """Render medical disclaimer"""
@@ -628,6 +702,9 @@ def render_risk_assessment_page():
         if warnings:
             for warning in warnings:
                 st.warning(warning)
+
+        # Store patient data in session state for other features
+        st.session_state.patient_data = patient_data
 
         # Preprocess
         input_df = validator.preprocess_for_model(patient_data)

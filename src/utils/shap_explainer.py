@@ -78,10 +78,38 @@ class SHAPExplainer:
                 feature_names = input_data.columns.tolist()
 
             # Create feature contributions dictionary
+            # Ensure we extract scalars, not arrays
+            def safe_float(val):
+                """Safely convert numpy array or scalar to Python float"""
+                import numpy as np
+
+                # Convert to numpy array if not already
+                if isinstance(val, (int, float)):
+                    return float(val)
+
+                # Handle numpy arrays
+                if isinstance(val, np.ndarray):
+                    # Flatten and take first value
+                    flat = val.flatten()
+                    if len(flat) == 0:
+                        return 0.0
+                    if len(flat) == 1:
+                        return float(flat[0])
+                    # If array has multiple values, take first
+                    return float(flat[0])
+
+                # Try to convert directly
+                try:
+                    return float(val)
+                except (ValueError, TypeError):
+                    return 0.0
+
             if len(shap_values.shape) == 2:
-                contributions = dict(zip(feature_names, shap_values[0]))
+                # 2D array: take first row and convert to scalars
+                contributions = {name: safe_float(val) for name, val in zip(feature_names, shap_values[0])}
             else:
-                contributions = dict(zip(feature_names, shap_values))
+                # 1D array: convert to scalars
+                contributions = {name: safe_float(val) for name, val in zip(feature_names, shap_values)}
 
             # Sort by absolute contribution
             sorted_contributions = sorted(
