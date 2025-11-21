@@ -221,7 +221,8 @@ def load_background_data():
         X_train = train_data.drop('Heart_Disease', axis=1)
         # Sample for SHAP background - reduced sample size
         return X_train.sample(min(50, len(X_train)), random_state=42)
-    except:
+    except Exception as e:
+        print(f"⚠️ Could not load background data for SHAP: {e}")
         return None
 
 # ============================================
