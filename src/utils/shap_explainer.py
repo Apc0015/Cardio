@@ -50,7 +50,6 @@ class SHAPExplainer:
             # Fallback to Kernel explainer with minimal sample
             background_sample = shap.sample(self.background_data, 30)
             return shap.KernelExplainer(self.model.predict_proba, background_sample)
-            return shap.KernelExplainer(self.model.predict_proba, background_sample)
 
     def explain_prediction(self,
                           input_data: pd.DataFrame,

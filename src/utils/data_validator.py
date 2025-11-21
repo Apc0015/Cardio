@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from typing import Dict, Tuple, Optional, List
 import warnings
+import re
 warnings.filterwarnings('ignore')
 
 
@@ -56,13 +57,116 @@ class DataValidator:
     }
 
     def __init__(self):
-        """Initialize the validator"""
+        """Initialize validator"""
         self.validation_errors = []
         self.validation_warnings = []
 
+    def _validate_data_types(self, data: Dict):
+        """Validate data types and handle edge cases"""
+        
+        # Check for None values
+        for key, value in data.items():
+            if value is None:
+                self.validation_errors.append(f"❌ Missing value for {key.replace('_', ' ')}")
+            elif isinstance(value, str) and value.strip() == "":
+                self.validation_errors.append(f"❌ Empty value for {key.replace('_', ' ')}")
+        
+        # Validate numeric fields are actually numeric
+        numeric_fields = ['height_cm', 'weight_kg', 'alcohol_consumption', 
+                        'fruit_consumption', 'green_vegetables_consumption', 
+                        'fried_potato_consumption']
+        
+        for field in numeric_fields:
+            if field in data:
+                try:
+                    # Convert to float if string
+                    if isinstance(data[field], str):
+                        data[field] = float(data[field])
+                    elif not isinstance(data[field], (int, float)):
+                        self.validation_errors.append(f"❌ {field.replace('_', ' ')} must be a number")
+                except (ValueError, TypeError):
+                    self.validation_errors.append(f"❌ Invalid number format for {field.replace('_', ' ')}")
+
+    def _validate_extreme_values(self, data: Dict):
+        """Validate extreme values and potential data entry errors"""
+        
+        # Height/Weight consistency checks
+        if 'height_cm' in data and 'weight_kg' in data:
+            height = data['height_cm']
+            weight = data['weight_kg']
+            
+            # Check for impossible combinations
+            if height < 120 and weight > 200:
+                self.validation_warnings.append("⚠️ Unusual height/weight combination detected")
+            elif height > 220 and weight < 40:
+                self.validation_warnings.append("⚠️ Unusual height/weight combination detected")
+        
+        # BMI extreme values
+        if 'bmi' in data:
+            bmi = data['bmi']
+            if bmi < 12:
+                self.validation_errors.append("❌ BMI is dangerously low - please verify height/weight")
+            elif bmi > 60:
+                self.validation_errors.append("❌ BMI is extremely high - please verify height/weight")
+        
+        # Lifestyle consumption validation
+        consumption_fields = {
+            'alcohol_consumption': (0, 30, 'alcohol units per month'),
+            'fruit_consumption': (0, 120, 'fruit servings per month'),
+            'green_vegetables_consumption': (0, 128, 'vegetable servings per month'),
+            'fried_potato_consumption': (0, 128, 'fried potato servings per month')
+        }
+        
+        for field, (min_val, max_val, unit) in consumption_fields.items():
+            if field in data:
+                value = data[field]
+                if value < 0:
+                    self.validation_errors.append(f"❌ {field.replace('_', ' ')} cannot be negative")
+                elif value > max_val * 2:  # Allow some flexibility but flag extremes
+                    self.validation_warnings.append(f"⚠️ Very high {field.replace('_', ' ')} ({value} {unit}) - please verify")
+
+    def _validate_medical_consistency(self, data: Dict):
+        """Validate medical consistency and logical relationships"""
+        
+        # Age-related health condition consistency
+        age_category = data.get('age_category', '50-54')
+        age_numeric = self.AGE_MAPPING.get(age_category, 52)
+        
+        # Check for age-inappropriate conditions
+        if age_numeric < 30:
+            if data.get('arthritis') == 'Yes':
+                self.validation_warnings.append("⚠️ Arthritis diagnosis unusual for this age group")
+            if data.get('other_cancer') == 'Yes':
+                self.validation_warnings.append("⚠️ Cancer diagnosis unusual for this age group")
+        
+        # Pregnancy-related validation
+        if data.get('sex') == 'Male':
+            if data.get('diabetes') == 'Yes, but female told only during pregnancy':
+                self.validation_errors.append("❌ Gestational diabetes cannot be selected for males")
+        
+        # Health condition count validation
+        serious_conditions = ['skin_cancer', 'other_cancer']
+        serious_count = sum(1 for condition in serious_conditions if data.get(condition) == 'Yes')
+        
+        if serious_count > 2:
+            self.validation_warnings.append("⚠️ Multiple serious cancer diagnoses detected - please verify")
+
+    def _validate_input_completeness(self, data: Dict):
+        """Validate that required fields are present"""
+        
+        required_fields = ['age_category', 'sex', 'height_cm', 'weight_kg']
+        missing_fields = []
+        
+        for field in required_fields:
+            if field not in data or data[field] is None:
+                missing_fields.append(field.replace('_', ' ').title())
+        
+        if missing_fields:
+            self.validation_errors.append(f"❌ Required fields missing: {', '.join(missing_fields)}")
+
     def validate_input(self, user_data: Dict) -> Tuple[bool, List[str], List[str]]:
         """
-        Validate user input data
+        Validate user input data with enhanced edge case handling
 
         Args:
             user_data: Dictionary of user inputs
@@ -73,13 +177,13 @@ class DataValidator:
         self.validation_errors = []
         self.validation_warnings = []
 
-        # Validate numerical ranges
+        # Enhanced validation steps
+        self._validate_input_completeness(user_data)
+        self._validate_data_types(user_data)
         self._validate_numerical_values(user_data)
-
-        # Validate categorical values
+        self._validate_extreme_values(user_data)
         self._validate_categorical_values(user_data)
-
-        # Clinical validation
+        self._validate_medical_consistency(user_data)
         self._validate_clinical_logic(user_data)
 
         is_valid = len(self.validation_errors) == 0
@@ -166,7 +270,7 @@ class DataValidator:
 
     def preprocess_for_model(self, user_data: Dict) -> pd.DataFrame:
         """
-        Convert user input to model-ready format
+        Convert user input to model-ready format with enhanced error handling
 
         Args:
             user_data: Validated user input dictionary
@@ -174,64 +278,84 @@ class DataValidator:
         Returns:
             DataFrame ready for model prediction
         """
-        # Create base dataframe
-        processed_data = {}
+        try:
+            # Create base dataframe
+            processed_data = {}
 
-        # Calculate BMI if not provided
-        if 'bmi' not in user_data and 'height_cm' in user_data and 'weight_kg' in user_data:
-            height_m = user_data['height_cm'] / 100
-            user_data['bmi'] = user_data['weight_kg'] / (height_m ** 2)
+            # Calculate BMI if not provided
+            if 'bmi' not in user_data and 'height_cm' in user_data and 'weight_kg' in user_data:
+                height_m = user_data['height_cm'] / 100
+                user_data['bmi'] = user_data['weight_kg'] / (height_m ** 2)
 
-        # Add numerical features
-        numerical_features = [
-            'height_cm', 'weight_kg', 'bmi', 'alcohol_consumption',
-            'fruit_consumption', 'green_vegetables_consumption',
-            'fried_potato_consumption'
-        ]
+            # Add numerical features with exact expected names (fixed feature name matching)
+            def get_numeric_value(feat_name, default=0):
+                """Helper to safely extract numeric value"""
+                value = user_data.get(feat_name, default)
+                if isinstance(value, str):
+                    try:
+                        return float(value)
+                    except ValueError:
+                        return default
+                elif isinstance(value, (int, float)):
+                    return value
+                return default
 
-        for feat in numerical_features:
-            processed_data[feat.replace('_cm', '_(cm)').replace('_kg', '_(kg)').title()] = [
-                user_data.get(feat, 0)
+            # Use exact feature names that match model training
+            processed_data['Height_(cm)'] = [get_numeric_value('height_cm', 170)]
+            processed_data['Weight_(kg)'] = [get_numeric_value('weight_kg', 70)]
+            processed_data['BMI'] = [get_numeric_value('bmi', 25)]
+            processed_data['Alcohol_Consumption'] = [get_numeric_value('alcohol_consumption', 0)]
+            processed_data['Fruit_Consumption'] = [get_numeric_value('fruit_consumption', 30)]
+            processed_data['Green_Vegetables_Consumption'] = [get_numeric_value('green_vegetables_consumption', 12)]
+            processed_data['FriedPotato_Consumption'] = [get_numeric_value('fried_potato_consumption', 4)]
+
+            # Feature engineering with error handling
+            processed_data['Age_Numeric'] = [self.AGE_MAPPING.get(user_data.get('age_category', '50-54'), 52)]
+            processed_data['BMI_Category_Encoded'] = [self._categorize_bmi(user_data.get('bmi', 25))]
+            processed_data['Lifestyle_Risk_Score'] = [self._calculate_lifestyle_risk(user_data)]
+            processed_data['Health_Conditions_Count'] = [self._count_health_conditions(user_data)]
+
+            # Ordinal encoding
+            processed_data['General_Health_Encoded'] = [
+                self.ORDINAL_MAPPINGS['general_health'].get(user_data.get('general_health', 'Good'), 2)
+            ]
+            processed_data['Age_Category_Encoded'] = [
+                self.ORDINAL_MAPPINGS['age_category'].get(user_data.get('age_category', '50-54'), 6)
             ]
 
-        # Feature engineering
-        processed_data['Age_Numeric'] = [self.AGE_MAPPING.get(user_data.get('age_category', '50-54'), 52)]
-        processed_data['BMI_Category_Encoded'] = [self._categorize_bmi(user_data.get('bmi', 25))]
-        processed_data['Lifestyle_Risk_Score'] = [self._calculate_lifestyle_risk(user_data)]
-        processed_data['Health_Conditions_Count'] = [self._count_health_conditions(user_data)]
+            # One-hot encoding for categorical features
+            self._add_one_hot_features(processed_data, user_data)
 
-        # Ordinal encoding
-        processed_data['General_Health_Encoded'] = [
-            self.ORDINAL_MAPPINGS['general_health'].get(user_data.get('general_health', 'Good'), 2)
-        ]
-        processed_data['Age_Category_Encoded'] = [
-            self.ORDINAL_MAPPINGS['age_category'].get(user_data.get('age_category', '50-54'), 6)
-        ]
+            # Create DataFrame
+            df = pd.DataFrame(processed_data)
 
-        # One-hot encoding for categorical features
-        self._add_one_hot_features(processed_data, user_data)
+            # Ensure all required features are present (match training data)
+            df = self._ensure_feature_completeness(df)
 
-        # Create DataFrame
-        df = pd.DataFrame(processed_data)
-
-        # Ensure all required features are present (match training data)
-        df = self._ensure_feature_completeness(df)
-
-        return df
+            return df
+            
+        except Exception as e:
+            # Return empty DataFrame with error info
+            print(f"❌ Error preprocessing data: {e}")
+            return pd.DataFrame()
 
     def _categorize_bmi(self, bmi: float) -> int:
-        """Categorize BMI into standard health categories"""
-        if bmi < 18.5:
+        """Categorize BMI into standard health categories with validation"""
+        if bmi < 12:
+            return 0  # Severely underweight
+        elif bmi < 18.5:
             return 0  # Underweight
         elif 18.5 <= bmi < 25:
             return 1  # Normal
         elif 25 <= bmi < 30:
             return 2  # Overweight
-        else:
+        elif 30 <= bmi < 40:
             return 3  # Obese
+        else:
+            return 3  # Severely obese
 
     def _calculate_lifestyle_risk(self, data: Dict) -> int:
-        """Calculate lifestyle risk score"""
+        """Calculate lifestyle risk score with enhanced logic"""
         risk_score = 0
 
         if data.get('smoking_history') == 'Yes':
@@ -247,10 +371,11 @@ class DataValidator:
         if data.get('fried_potato_consumption', 0) > 8:
             risk_score += 1
 
-        return risk_score
+        # Cap risk score to reasonable range
+        return min(risk_score, 10)
 
     def _count_health_conditions(self, data: Dict) -> int:
-        """Count existing health conditions"""
+        """Count existing health conditions with validation"""
         conditions = ['skin_cancer', 'other_cancer', 'depression', 'diabetes', 'arthritis']
         count = 0
 
@@ -260,10 +385,11 @@ class DataValidator:
             elif condition == 'diabetes' and 'diabetes' in data.get('diabetes', ''):
                 count += 1
 
-        return count
+        # Cap at reasonable maximum
+        return min(count, 5)
 
     def _add_one_hot_features(self, processed_data: Dict, user_data: Dict):
-        """Add one-hot encoded features"""
+        """Add one-hot encoded features with validation"""
 
         # Checkup features
         checkup_value = user_data.get('checkup', 'Within the past year')
@@ -298,7 +424,7 @@ class DataValidator:
         ]
 
     def _ensure_feature_completeness(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Ensure all expected features are present"""
+        """Ensure all expected features are present with validation"""
 
         expected_features = [
             'Height_(cm)', 'Weight_(kg)', 'BMI', 'Alcohol_Consumption',
@@ -320,7 +446,14 @@ class DataValidator:
                 df[feature] = 0
 
         # Reorder columns to match expected order
-        df = df[expected_features]
+        try:
+            df = df[expected_features]
+        except KeyError as e:
+            print(f"⚠️ Missing expected feature: {e}")
+            # Use available features
+            available_features = [f for f in expected_features if f in df.columns]
+            if available_features:
+                df = df[available_features]
 
         return df
 
