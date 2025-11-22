@@ -13,6 +13,64 @@ import hashlib
 import os
 warnings.filterwarnings('ignore')
 
+# Try to import TensorFlow/Keras for neural network models
+try:
+    from tensorflow import keras
+    KERAS_AVAILABLE = True
+except ImportError:
+    KERAS_AVAILABLE = False
+
+
+class KerasModelWrapper:
+    """
+    Wrapper to make Keras models compatible with scikit-learn interface
+    Provides predict() and predict_proba() methods
+    """
+    
+    def __init__(self, keras_model):
+        """
+        Initialize wrapper with a Keras model
+        
+        Args:
+            keras_model: Loaded Keras Sequential or Functional model
+        """
+        self.model = keras_model
+        self.n_features_in_ = keras_model.input_shape[1]
+    
+    def predict(self, X):
+        """
+        Predict class labels
+        
+        Args:
+            X: Input features
+            
+        Returns:
+            Predicted class labels (0 or 1)
+        """
+        probabilities = self.predict_proba(X)
+        return (probabilities[:, 1] >= 0.5).astype(int)
+    
+    def predict_proba(self, X):
+        """
+        Predict class probabilities
+        
+        Args:
+            X: Input features
+            
+        Returns:
+            Array of shape (n_samples, 2) with probabilities for each class
+        """
+        # Get predictions from Keras model (assumes binary classification with sigmoid output)
+        predictions = self.model.predict(X, verbose=0)
+        
+        # Keras model outputs probability of class 1
+        # Convert to (n_samples, 2) format: [prob_class_0, prob_class_1]
+        prob_class_1 = predictions.flatten()
+        prob_class_0 = 1 - prob_class_1
+        
+        return np.column_stack([prob_class_0, prob_class_1])
+
+
 
 class ModelPredictor:
     """
@@ -206,9 +264,9 @@ class ModelPredictor:
             print("ℹ️ Advanced models not yet trained")
             return
 
+        # Regular models to load as pickle files
         model_files = {
             'XGBoost': 'xgboost_model.pkl',
-            'Neural Network': 'neural_network_model.pkl',
             'Hybrid Ensemble': 'hybrid_ensemble_model.pkl'
         }
 
@@ -230,6 +288,57 @@ class ModelPredictor:
                     print(f"  ❌ Failed to load {name}: {e}")
             else:
                 print(f"  ⚠️ Skipping {name} - file integrity check failed")
+
+        # Load Neural Network model (supports both .pkl and .h5 formats)
+        self._load_neural_network(advanced_dir)
+
+    def _load_neural_network(self, advanced_dir: Path):
+        """
+        Load Neural Network model with support for both .pkl and .h5 formats
+        
+        Args:
+            advanced_dir: Directory containing advanced models
+        """
+        name = 'Neural Network'
+        
+        # Try loading .pkl format first
+        pkl_path = advanced_dir / 'neural_network_model.pkl'
+        if pkl_path.exists() and self._verify_file_integrity(pkl_path):
+            try:
+                model = joblib.load(pkl_path)
+                if self._validate_model_object(model, name):
+                    self.models[name] = model
+                    print(f"  🧠 Loaded and validated: {name} (pickle format)")
+                    return
+            except Exception as e:
+                print(f"  ⚠️ Failed to load {name} from .pkl: {e}")
+        
+        # Try loading .h5 format (Keras model)
+        h5_path = advanced_dir / 'neural_network_model.h5'
+        if h5_path.exists():
+            if not KERAS_AVAILABLE:
+                print(f"  ⚠️ Skipping {name} - TensorFlow/Keras not available for .h5 models")
+                return
+                
+            try:
+                # Load Keras model
+                keras_model = keras.models.load_model(h5_path)
+                
+                # Wrap Keras model to make it compatible with scikit-learn interface
+                wrapped_model = KerasModelWrapper(keras_model)
+                
+                # Validate wrapped model
+                if self._validate_model_object(wrapped_model, name):
+                    self.models[name] = wrapped_model
+                    print(f"  🧠 Loaded and validated: {name} (Keras .h5 format)")
+                    return
+                else:
+                    print(f"  ❌ Model validation failed: {name}")
+                    
+            except Exception as e:
+                print(f"  ⚠️ Failed to load {name} from .h5: {e}")
+        
+        print(f"  ⚠️ {name} not found in either .pkl or .h5 format")
 
     def predict(self,
                 input_data: pd.DataFrame,
