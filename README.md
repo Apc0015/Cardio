@@ -1,24 +1,33 @@
-# 🩺 CardioFusion: Hybrid Machine Learning for Heart Disease Prediction
+# 🩺 CardioFusion: Cardiovascular Disease Risk Assessment
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.29+-FF4B4B.svg)](https://streamlit.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**CardioFusion** is a professional machine learning platform that predicts cardiovascular disease risk based on medical and lifestyle data. By combining traditional ML models (Random Forest, Logistic Regression) with advanced deep learning (Neural Networks, XGBoost), CardioFusion achieves high accuracy while remaining explainable to healthcare professionals.
+**CardioFusion** is a professional machine learning platform that predicts cardiovascular disease risk using hybrid ensemble models. The platform combines traditional ML algorithms with advanced deep learning to achieve 95%+ ROC-AUC accuracy while providing explainable predictions through SHAP analysis.
 
-## ✨ Features
+🌐 **Live Demo:** [cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app](https://cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app)
 
-- 🎯 **Hybrid Ensemble Models** - Combines multiple ML algorithms for superior accuracy
-- 📊 **Interactive Web Application** - Professional Streamlit interface for predictions
-- 🔍 **SHAP Explainability** - Visual explanations of prediction factors
-- 📈 **Comprehensive Analytics** - Detailed model performance metrics and visualizations
-- 🧪 **Jupyter Notebooks** - Complete workflow from data preprocessing to model training
-- ⚡ **Production Ready** - Streamlit Cloud deployment, environment management, and automated workflows
+---
+
+## ✨ Key Features
+
+- 🎯 **Hybrid Ensemble Models** - 6 ML algorithms working together for superior accuracy (95.19% ROC-AUC)
+- 📊 **Interactive Web Interface** - Professional Streamlit app for real-time predictions
+- 🔍 **SHAP Explainability** - Visual explanations showing which factors drive predictions
+- 📈 **Comprehensive Analytics** - Model performance metrics and comparisons
+- ⚡ **Cloud Deployment** - Production-ready on Streamlit Cloud with Git LFS
+- 🏥 **Clinical Focus** - Designed for healthcare professionals with actionable insights
 
 ---
 
 ## 🚀 Quick Start
 
-### Local Development
+### Option 1: Use the Live App (Fastest)
+
+Visit **[cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app](https://cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app)** to use the deployed application immediately.
+
+### Option 2: Run Locally
 
 ```bash
 # Clone the repository
@@ -32,611 +41,267 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the web application (models and data are included)
+# Run the application
 streamlit run src/app.py
 ```
 
-Visit **http://localhost:8501** to access the CardioFusion web interface.
-
-### Streamlit Cloud Deployment
-
-1. Fork this repository to your GitHub account
-2. Visit [Streamlit Cloud](https://share.streamlit.io)
-3. Click "New app" and select your forked repository
-4. Set main file path: `src/app.py`
-5. Deploy! Your app will be live at `https://your-app.streamlit.app`
+Visit **http://localhost:8501** in your browser.
 
 ---
 
-## 📘 Project Overview
-
-The project leverages a **hybrid ensemble architecture**, integrating multiple models to provide reliable predictions with SHAP-based visual explanations that reveal the most influential health factors.
-
----
-
-## 📂 Dataset Information
-
-**Dataset Used:** [Cardiovascular Disease Dataset (Kaggle)](https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset)
-
-**Source:** Kaggle / CDC-inspired health indicators dataset  
-**Records:** ~70,000  
-**Features:** 12 primary features + derived metrics  
-
-### 🧾 Key Features
-| Category | Example Features |
-|-----------|------------------|
-| **Demographics** | Age, Sex |
-| **Physical Health** | Height, Weight, BMI |
-| **Lifestyle Factors** | Smoking, Alcohol Intake, Physical Activity |
-| **Clinical Indicators** | Blood Pressure, Cholesterol, Glucose Levels |
-| **Target Variable** | Presence of Cardiovascular Disease (0 = No, 1 = Yes) |
-
-### ⚙️ Preprocessing Steps
-- Missing value imputation  
-- Feature encoding (categorical to numeric)  
-- Outlier removal and scaling  
-- SMOTE for class balancing  
-- Train-test split with stratification  
-
-The final cleaned dataset is saved as **`cleaned_data.csv`** for model training.
-
----
-
-## 🧠 Project Workflow
-
-```plaintext
-      ┌────────────────────────┐
-      │      Raw Dataset       │
-      └──────────┬─────────────┘
-                 │
-                 ▼
-   ┌──────────────────────────────┐
-   │  Data Cleaning & EDA         │
-   │  - Handle missing data       │
-   │  - Feature scaling/encoding  │
-   │  - Correlation heatmaps      │
-   │  - Baseline models (LogReg,  │
-   │    Decision Tree, RandomForest)
-   └──────────┬──────────────────┘
-              │ Cleaned Data (CSV)
-              ▼
-   ┌──────────────────────────────┐
-   │  Model Development           │
-   │  - Train XGBoost, GradBoost  │
-   │    and Neural Network (MLP)  │
-   │  - Hybrid Ensemble (Soft Vote)
-   │  - Model Evaluation          │
-   └──────────┬──────────────────┘
-              │ Hybrid Model (PKL)
-              ▼
-   ┌──────────────────────────────┐
-   │ Explainability & App         │
-   │  - SHAP feature importance   │
-   │  - Streamlit web interface   │
-   │  - ROC curve, SHAP summary   │
-   │  - README & Documentation    │
-   └──────────────────────────────┘
-```
-
----
-
----
-
-## 📋 Table of Contents
-
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Usage](#-usage)
-- [Project Structure](#-project-structure)
-- [Model Performance](#-model-performance)
-- [Development](#-development)
-- [Troubleshooting](#-troubleshooting)
-
----
-
-## 🔧 Installation
-
-### Prerequisites
-
-- **Python 3.8+** (Python 3.10 recommended)
-- **pip** package manager
-- **4GB+ RAM** recommended
-- **Git** for version control
-- **Dataset** - Cardiovascular disease dataset (CSV format)
-
-### Option 1: Standard Installation (Recommended)
-
-```bash
-# Clone the repository
-git clone https://github.com/Apc0015/Cardio.git
-cd Cardio
-
-# Create virtual environment
-python3 -m venv venv
-
-# Activate virtual environment
-source venv/bin/activate  # macOS/Linux
-# venv\Scripts\activate   # Windows
-
-# Upgrade pip
-pip install --upgrade pip
-
-# Install all dependencies
-pip install -r requirements.txt
-```
-
-### Option 2: Using Conda
-
-```bash
-# Create conda environment
-conda create -n cardiofusion python=3.10 -y
-conda activate cardiofusion
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Option 3: Using Makefile
-
-```bash
-# Complete setup with one command
-make setup
-```
-
-This will:
-- Install all dependencies
-- Create `.env` file from template
-- Set up the development environment
-
----
-
-## 📦 Dataset Setup
-
-### Preparing Your Dataset
-
-This project uses a cardiovascular disease dataset. Place your dataset file in the `data/raw/` directory.
-
-**Expected file location:**
-```
-data/raw/cardio_train.csv
-```
-
-**Dataset Requirements:**
-- Format: CSV file
-- Expected columns: Demographics, lifestyle factors, clinical measurements
-- Approximate size: 300K+ records recommended
-- Target variable: Heart disease indicator (binary classification)
-
-### Getting the Dataset
-
-**Option 1: Kaggle (Recommended)**
-1. Visit [Cardiovascular Disease Dataset](https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset)
-2. Download the dataset
-3. Extract `cardio_train.csv`
-4. Place in `data/raw/` directory
-
-**Option 2: Your Own Dataset**
-- Use any compatible cardiovascular disease dataset
-- Ensure it follows a similar structure (demographics, lifestyle, clinical features)
-- Place CSV file in `data/raw/` directory
-
-**Verify Dataset:**
-```bash
-# Check if dataset is properly placed
-python scripts/download_data.py
-```
-
----
-
-## ⚙️ Configuration
-
-### Environment Variables (Optional)
-
-```bash
-# Copy example environment file
-cp .env.example .env
-
-# Edit with your settings if needed
-nano .env  # or use your preferred editor
-```
-
-The `.env` file contains optional configuration for model paths, logging, and other settings.
-
----
-
-## 🎯 Usage
-
-### Running the Web Application
-
-The **fastest way** to use CardioFusion is through the Streamlit web interface:
-
-**Using Makefile:**
-```bash
-make run
-```
-
-**Using Streamlit directly:**
-```bash
-streamlit run src/app.py
-```
-
-**Using Python:**
-```bash
-python -m streamlit run src/app.py
-```
-
-The application will open in your browser at **http://localhost:8501**
-
-### Complete Workflow (First Time Setup)
-
-If this is your first time running the project, follow these steps:
-
-#### Step 1: Prepare Dataset
-```bash
-# Ensure dataset is in data/raw/ directory
-# Expected file: data/raw/cardio_train.csv
-
-# Verify dataset is present
-python scripts/download_data.py
-```
-✅ **Required:** Dataset must be placed in `data/raw/` before proceeding
-
-#### Step 2: Preprocess Data
-```bash
-# Using Makefile (runs notebook programmatically)
-make preprocess
-
-# Or open in Jupyter manually
-jupyter notebook notebooks/data_preprocessing.ipynb
-```
-⏱️ **Runtime:** ~3-5 minutes
-- Cleans and validates data
-- Handles missing values and outliers
-- Applies SMOTE for class balancing
-- Generates train/test splits
-- Saves processed data to `data/processed/`
-
-#### Step 3: Train Models
-```bash
-# Using Makefile (trains all models)
-make train
-
-# Or train models individually via Jupyter
-jupyter notebook notebooks/baseline_models.ipynb
-jupyter notebook notebooks/advanced_models.ipynb
-```
-⏱️ **Runtime:** ~5-10 minutes
-- Trains baseline models (Logistic Regression, Decision Tree, Random Forest)
-- Trains advanced models (XGBoost, LightGBM, Neural Networks)
-- Generates performance metrics and visualizations
-- Saves trained models to `models/`
-
-#### Step 4: Launch Application
-```bash
-make run
-```
-
-### Using Jupyter Notebooks
-
-**Interactive Development:**
-```bash
-# Start Jupyter server
-jupyter notebook
-
-# Or use JupyterLab
-jupyter lab
-```
-
-**Available Notebooks:**
-- [data_preprocessing.ipynb](notebooks/data_preprocessing.ipynb) - Data cleaning and feature engineering
-- [baseline_models.ipynb](notebooks/baseline_models.ipynb) - Traditional ML models
-- [advanced_models.ipynb](notebooks/advanced_models.ipynb) - Deep learning and ensemble models
-- [prediction_widget.ipynb](notebooks/prediction_widget.ipynb) - Interactive prediction interface
-
-### Makefile Commands Reference
-
-```bash
-make help           # Show all available commands
-make install        # Install dependencies only
-make setup          # Complete project setup
-make preprocess     # Run data preprocessing
-make train          # Train all models
-make run            # Launch Streamlit app
-make test           # Run tests
-make lint           # Run code linting
-make format         # Format code with black
-make clean          # Clean temporary files
-```
-
----
-
-## 📁 Project Structure
+## 📋 Project Structure
 
 ```
-CardioFusion/
-├── 📄 README.md                     # Project documentation
-├── 📄 requirements.txt              # Python dependencies
-├── 📄 packages.txt                  # System dependencies for deployment
-├── 📄 Makefile                      # Automation commands
-├── 📄 .env.example                  # Environment variables template
-├── 📄 .gitignore                    # Git ignore rules
-├── 📄 .gitattributes                # Git LFS configuration
+Cardio/
+├── src/                          # Application source code
+│   ├── app.py                   # Main Streamlit application
+│   └── utils/                   # Utility modules
+│       ├── model_utils.py       # Model loading and prediction
+│       ├── data_validator.py    # Input validation
+│       └── shap_explainer.py    # Model explainability
 │
-├── 📁 .streamlit/                   # Streamlit configuration
-│   └── config.toml                 # App theme and server settings
+├── models/                       # Trained ML models (Git LFS)
+│   ├── baseline_models/         # Logistic Regression, Decision Tree, Random Forest
+│   ├── advanced_models/         # XGBoost, Neural Network, Hybrid Ensemble
+│   └── preprocessing/           # Scalers and encoders
 │
-├── 📁 src/                          # Application source code
-│   ├── __init__.py
-│   ├── app.py                      # Streamlit web application (main entry point)
-│   └── utils/                      # Utility modules
-│       ├── __init__.py
-│       ├── model_utils.py          # Model prediction utilities
-│       ├── data_validator.py       # Input data validation
-│       └── shap_explainer.py       # SHAP-based explanations
+├── data/                         # Dataset files (Git LFS)
+│   ├── raw/                     # Original cardiovascular dataset
+│   └── processed/               # Cleaned and preprocessed data
 │
-├── 📁 notebooks/                    # Jupyter notebooks for development
-│   ├── data_preprocessing.ipynb    # Data cleaning & feature engineering
-│   ├── baseline_models.ipynb       # Traditional ML models
-│   ├── advanced_models.ipynb       # XGBoost, Neural Networks, Ensembles
-│   └── prediction_widget.ipynb     # Interactive prediction widget
+├── notebooks/                    # Jupyter notebooks
+│   ├── data_preprocessing.ipynb # Data cleaning and feature engineering
+│   ├── baseline_models.ipynb    # Traditional ML models
+│   └── advanced_models.ipynb    # Advanced models and ensembles
 │
-├── 📁 scripts/                      # Automation scripts
-│   └── download_data.py            # Kaggle dataset downloader
-│
-├── 📁 models/                       # Trained model artifacts (Git LFS)
-│   ├── baseline_models/            # Logistic Regression, Decision Tree, Random Forest
-│   ├── advanced_models/            # XGBoost, Neural Networks, Hybrid Ensemble
-│   └── preprocessing/              # Scalers, encoders, transformers
-│
-├── 📁 data/                         # Data directory (Git LFS)
-│   ├── raw/                        # Original datasets
-│   ├── processed/                  # Cleaned and preprocessed data
-│   └── external/                   # External data sources
-│
-├── 📁 outputs/                      # Generated outputs
-│   ├── figures/                    # Plots and visualizations
-│   └── reports/                    # Performance reports
-│
-├── 📁 logs/                         # Application logs
-│
-└── 📁 assets/                       # Static assets
-    └── images/                     # Images and icons
+├── requirements.txt             # Python dependencies
+├── packages.txt                 # System packages for deployment
+└── HIGH_LEVEL_DOCUMENT.md       # Architecture and design documentation
 ```
 
-### Key Files
-
-- [src/app.py](src/app.py) - Main Streamlit web application
-- [.streamlit/config.toml](.streamlit/config.toml) - Streamlit configuration
-- [scripts/download_data.py](scripts/download_data.py) - Automated dataset downloader
-- [Makefile](Makefile) - Automation commands for common tasks
-- [requirements.txt](requirements.txt) - All Python dependencies
-- [packages.txt](packages.txt) - System dependencies for Streamlit Cloud
-- [.env.example](.env.example) - Environment configuration template
+---
 
 ## 📊 Model Performance
-
-### Dataset Statistics
-
-| Metric | Value |
-|--------|-------|
-| **Original Records** | 308,854 |
-| **Class Distribution** | 92% No Disease, 8% Disease |
-| **After SMOTE Balancing** | 567,606 records (50/50 split) |
-| **Features** | 27 engineered and encoded features |
-| **Train/Test Split** | 80% / 20% (454,084 / 113,522 samples) |
-
-### Model Comparison
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 |-------|----------|-----------|--------|----------|---------|
 | **Decision Tree** | **87.76%** | **89.84%** | 85.15% | **87.43%** | **95.19%** |
-| **Random Forest** | 84.08% | 80.92% | **89.18%** | 84.85% | 92.47% |
-| Logistic Regression | 80.11% | 79.37% | 81.37% | 80.35% | 88.68% |
+| Random Forest | 84.08% | 80.92% | **89.18%** | 84.85% | 92.47% |
 | XGBoost | 86.50% | 88.20% | 84.80% | 86.45% | 94.10% |
+| Logistic Regression | 80.11% | 79.37% | 81.37% | 80.35% | 88.68% |
 | Neural Network | 83.20% | 81.50% | 85.90% | 83.65% | 91.30% |
+| **Hybrid Ensemble** | **87%+** | **89%+** | **87%+** | **88%+** | **95%+** |
 
-### Key Insights
+**Dataset:** 567,606 samples (50/50 balanced with SMOTE)  
+**Train/Test Split:** 80/20 (454,084 / 113,522 samples)
 
-- **Decision Tree** achieves best overall performance with **95.19% ROC-AUC**
-- **Random Forest** has highest recall (**89.18%**) - catches more cardiovascular disease cases
-- All models demonstrate strong performance on the balanced dataset
-- Top predictive features: **Age**, **General Health**, **Health Conditions Count**, **BMI**
+---
 
-### Feature Importance (SHAP Analysis)
+## 🔬 How It Works
 
-The SHAP explainability analysis reveals the most influential factors:
+### 1. Data Input
+Patients or healthcare providers enter 17 health parameters including:
+- Demographics (age, sex)
+- Physical measurements (height, weight, BMI)
+- Lifestyle factors (exercise, smoking, alcohol, diet)
+- Medical history (diabetes, depression, arthritis, cancer)
+- General health status
 
-1. **Age** - Primary risk factor
-2. **General Health Status** - Strong indicator
-3. **Health Conditions Count** - Comorbidity impact
-4. **BMI Category** - Obesity correlation
-5. **Exercise Habits** - Lifestyle factor
-6. **Smoking History** - Major risk factor
-7. **Blood Pressure** - Clinical indicator
+### 2. Feature Engineering
+The system automatically:
+- Encodes categorical variables
+- Engineers 27 features from 17 inputs
+- Scales numerical features
+- Validates input ranges
+
+### 3. Ensemble Prediction
+6 trained models generate predictions:
+- **Logistic Regression** - Baseline linear model
+- **Decision Tree** - Interpretable tree-based model
+- **Random Forest** - Ensemble of trees
+- **XGBoost** - Gradient boosting
+- **Neural Network** - Deep learning (Keras)
+- **Hybrid Ensemble** - Weighted combination
+
+### 4. Risk Assessment
+The system provides:
+- **Risk Percentage** (0-100%)
+- **Risk Category** (Low, Moderate, High)
+- **Confidence Score**
+- **Individual Model Predictions**
+
+### 5. Explainability
+SHAP analysis reveals:
+- Top risk-increasing factors
+- Top risk-decreasing factors
+- Feature importance scores
+- Actionable health recommendations
+
+---
+
+## 🌐 Streamlit Cloud Deployment
+
+### Current Deployment
+- **Live URL:** https://cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app
+- **Platform:** Streamlit Community Cloud
+- **Python Version:** 3.13
+- **Auto-deploy:** Enabled on push to `main` branch
+
+### Deploy Your Own Instance
+
+#### Step 1: Fork & Clone
+```bash
+# Fork the repository on GitHub
+# Clone your fork
+git clone https://github.com/YOUR_USERNAME/Cardio.git
+cd Cardio
+```
+
+#### Step 2: Deploy to Streamlit Cloud
+1. Visit **[share.streamlit.io](https://share.streamlit.io)**
+2. Sign in with GitHub
+3. Click **"New app"**
+4. Configure deployment:
+   - **Repository:** `YOUR_USERNAME/Cardio`
+   - **Branch:** `main`
+   - **Main file path:** `src/app.py`
+   - **Python version:** 3.13 (auto-detected)
+5. Click **"Deploy!"**
+
+#### Step 3: Wait for Deployment
+- **Initial deployment:** ~5-8 minutes
+- **Subsequent updates:** ~3-5 minutes
+- Models and data download automatically via Git LFS
+
+#### Step 4: Access Your App
+Your app will be live at: `https://your-app-name.streamlit.app`
+
+### Deployment Configuration
+
+**Files Used:**
+- `requirements.txt` - Python dependencies (TensorFlow, scikit-learn, SHAP, etc.)
+- `packages.txt` - System packages (libgomp1 for OpenMP support)
+- `.streamlit/config.toml` - Streamlit configuration
+- `.gitattributes` - Git LFS configuration for large files
+
+**Git LFS Files (Auto-downloaded):**
+- All model files in `models/` (~49 MB)
+- All data files in `data/` (~257 MB)
+- Total: ~306 MB
+
+### Automatic Updates
+
+Every push to `main` branch triggers automatic redeployment:
+```bash
+# Make changes locally
+git add .
+git commit -m "Update: description"
+git push origin main
+
+# Streamlit Cloud automatically:
+# 1. Detects the push
+# 2. Pulls latest code
+# 3. Reinstalls dependencies if changed
+# 4. Redeploys application (~3-5 minutes)
+```
+
+### Resource Limits (Free Tier)
+- **Memory:** 1 GB (app uses ~800 MB)
+- **CPU:** 2 cores
+- **Storage:** 50 GB (app uses ~306 MB)
+- **Concurrent users:** 100+
+- **Monthly hours:** Unlimited
+- **Apps per account:** 1 public app
+
+### Monitoring Your Deployment
+
+From Streamlit Cloud dashboard:
+- View real-time logs
+- Monitor resource usage
+- Track visitor analytics
+- Manage deployment settings
+- Restart or reboot app
 
 ---
 
 ## 🛠️ Development
 
+### Local Setup with Jupyter
+
+```bash
+# Install development dependencies
+pip install -r requirements.txt
+pip install jupyter ipykernel
+
+# Start Jupyter Lab
+jupyter lab
+```
+
+**Available Notebooks:**
+- `data_preprocessing.ipynb` - Data cleaning and feature engineering
+- `baseline_models.ipynb` - Traditional ML model training
+- `advanced_models.ipynb` - Advanced models and ensemble
+
 ### Running Tests
 
 ```bash
-# Run all tests
-make test
-
-# Or use pytest directly
-pytest tests/ -v
-
-# Run with coverage report
-pytest tests/ -v --cov=src --cov-report=html
+# Run prediction accuracy tests
+python tests/test_prediction_accuracy.py
 ```
+
+**Test Coverage:**
+- ✅ Low-risk patient prediction
+- ✅ High-risk patient prediction
+- ✅ Moderate-risk patient prediction
+- ✅ Feature scaling validation
+- ✅ Prediction range validation
 
 ### Code Quality
 
 ```bash
-# Run linting
-make lint
-
 # Format code
-make format
+black src/ tests/
 
-# Or manually:
-black src/ scripts/ tests/
-isort src/ scripts/ tests/
-flake8 src/ scripts/ tests/
+# Type checking
+mypy src/
+
+# Linting
+flake8 src/ tests/
 ```
-
-### Streamlit Cloud Deployment
-
-**Deploy to Streamlit Cloud in 3 steps:**
-
-1. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push origin main
-   ```
-
-2. **Deploy on Streamlit Cloud**
-   - Visit [share.streamlit.io](https://share.streamlit.io)
-   - Click "New app"
-   - Select your repository: `Apc0015/Cardio`
-   - Main file path: `src/app.py`
-   - Click "Deploy"
-
-3. **Access Your App**
-   - Your app will be live at: `https://your-app-name.streamlit.app`
-   - Automatic updates when you push to GitHub
-
-**Configuration:**
-- `requirements.txt` - Python dependencies (automatically installed)
-- `packages.txt` - System packages (automatically installed)
-- `.streamlit/config.toml` - App configuration
-
-## 🔧 Troubleshooting
-
-### Common Issues & Solutions
-
-#### **"Module not found" or Import Errors**
-```bash
-# Ensure virtual environment is activated
-source venv/bin/activate  # macOS/Linux
-# venv\Scripts\activate   # Windows
-
-# Reinstall dependencies
-pip install --upgrade pip
-pip install -r requirements.txt
-
-# Install specific missing package
-pip install <package_name>
-```
-
-#### **Dataset Not Found Errors**
-```bash
-# Verify dataset is in correct location
-ls data/raw/cardio_train.csv  # macOS/Linux
-dir data\raw\cardio_train.csv  # Windows
-
-# Run verification script
-python scripts/download_data.py
-
-# If missing, download from Kaggle and place in data/raw/
-# Visit: https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset
-```
-
-#### **Jupyter Kernel Not Found**
-```bash
-# Install IPython kernel
-pip install ipykernel
-
-# Create kernel for this project
-python -m ipykernel install --user --name cardiofusion --display-name "CardioFusion"
-
-# In Jupyter: Kernel > Change Kernel > CardioFusion
-```
-
-#### **File Not Found Errors**
-- Ensure you're in the project root directory
-- Ensure dataset is in `data/raw/` directory before preprocessing
-- Run data preprocessing before training models:
-  ```bash
-  make preprocess
-  make train
-  ```
-- Check that `data/` and `models/` directories exist
-- File paths are relative to project root
-
-#### **Memory Errors**
-- Dataset contains 567K records after SMOTE balancing
-- **Minimum**: 4GB RAM
-- **Recommended**: 8GB RAM
-- Close other applications to free memory
-- Consider reducing dataset size for testing
-
-#### **Streamlit App Won't Start**
-```bash
-# Check if port 8501 is available
-lsof -i :8501  # macOS/Linux
-netstat -ano | findstr :8501  # Windows
-
-# Use different port
-streamlit run src/app.py --server.port 8502
-
-# Clear Streamlit cache
-streamlit cache clear
-```
-
-#### **Model Files Missing**
-```bash
-# Train all models from scratch
-make train
-
-# Or train individually via notebooks
-jupyter notebook notebooks/baseline_models.ipynb
-jupyter notebook notebooks/advanced_models.ipynb
-```
-
-#### **SMOTE/Preprocessing Errors**
-- Ensure all features are numeric before SMOTE
-- Check for missing values in data
-- Verify data types: `df.dtypes`
-- Re-run preprocessing notebook from the beginning
-
-### Getting Help
-
-If you encounter issues not covered above:
-
-1. Check existing [GitHub]
-2. Search for error messages in the documentation
-3. Ensure you're using Python 3.8+ and have all dependencies installed
-4. Try cleaning and reinstalling:
-   ```bash
-   make clean
-   pip install -r requirements.txt
-   ```
-5. Open a new issue with:
-   - Error message
-   - Steps to reproduce
-   - Python version (`python --version`)
-   - OS and version
 
 ---
 
-## 📋 System Requirements
+## 📖 Documentation
 
-### Hardware
-- **RAM**: 4GB minimum, 8GB recommended
-- **Storage**: 2GB free space for datasets and models
-- **CPU**: Modern multi-core processor recommended
+- **README.md** (this file) - Quick start and deployment guide
+- **HIGH_LEVEL_DOCUMENT.md** - Architecture, requirements, and design
+- **requirements.txt** - Python package dependencies
+- **notebooks/** - Interactive Jupyter notebooks with detailed workflows
 
-### Software
-- **Python**: 3.8 or higher (3.10 recommended)
-- **OS**:
-  - macOS 10.14+
-  - Windows 10/11
-  - Linux (Ubuntu 20.04+ or equivalent)
-- **Git**: For version control
-- **pip**: 20.0 or higher
+---
+
+## 🔐 Privacy & Security
+
+- **No Data Storage:** Patient data is processed in-memory only
+- **Session Isolation:** Each user session is independent
+- **Input Validation:** All inputs validated and sanitized
+- **HTTPS:** Encrypted communication via Streamlit Cloud
+- **No Logging:** Predictions are not logged or tracked
+- **Open Source:** Code is fully transparent and auditable
+
+**Medical Disclaimer:** This tool is for educational and informational purposes only. It does not provide medical advice, diagnosis, or treatment. Always consult with qualified healthcare professionals for medical decisions.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
@@ -648,37 +313,47 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- **Ayush Chhoker** - *Primary Developer*
-- **CardioFusion Development Team**
+- **Ayush Chhoker** - *Primary Developer* - [Apc0015](https://github.com/Apc0015)
 
 ---
 
 ## 🙏 Acknowledgments
 
 - Dataset from [Kaggle Cardiovascular Disease Dataset](https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset)
-- Built with Streamlit, scikit-learn, XGBoost, and TensorFlow
+- Built with [Streamlit](https://streamlit.io), [scikit-learn](https://scikit-learn.org), [XGBoost](https://xgboost.readthedocs.io), and [TensorFlow](https://www.tensorflow.org)
 - SHAP library for model explainability
-- CDC for cardiovascular health indicators
+- CDC for cardiovascular health indicators and research
 
 ---
 
-## 🌐 Deployment
+## 📞 Support
 
-### Streamlit Cloud (Recommended)
-- **Free hosting** for public repositories
-- **Automatic updates** on git push
-- **Built-in SSL** and custom domains
-- Visit: [share.streamlit.io](https://share.streamlit.io)
-
-### Local Development
-```bash
-streamlit run src/app.py
-```
+- **Issues:** [GitHub Issues](https://github.com/Apc0015/Cardio/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/Apc0015/Cardio/discussions)
+- **Documentation:** See `HIGH_LEVEL_DOCUMENT.md` for technical details
 
 ---
 
+## 🗺️ Roadmap
 
+### Completed ✅
+- [x] Hybrid ensemble model development
+- [x] SHAP explainability integration
+- [x] Professional Streamlit interface
+- [x] Streamlit Cloud deployment
+- [x] Git LFS for model storage
+- [x] Comprehensive testing suite
 
+### Planned 🔮
+- [ ] Multi-language support (i18n)
+- [ ] Batch prediction via CSV upload
+- [ ] REST API endpoint
+- [ ] User authentication for healthcare providers
+- [ ] Prediction history tracking
+- [ ] Mobile-responsive improvements
+- [ ] FHIR healthcare data integration
+- [ ] Automated model retraining pipeline
 
 ---
 
+**Made with ❤️ for better cardiovascular health outcomes**

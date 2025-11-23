@@ -1,6 +1,6 @@
 """
 SHAP Explainability Module - CardioFusion Clinical Platform
-Provides interpretable AI explanations for predictions
+Provides interpretable model explanations for predictions
 """
 
 import shap

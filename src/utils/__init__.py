@@ -4,7 +4,7 @@ Professional ML utilities for cardiovascular disease prediction
 """
 
 __version__ = "1.0.0"
-__author__ = "CardioFusion Development Team"
+__author__ = "Ayush Chhoker"
 
 from .model_utils import ModelPredictor, load_all_models
 from .shap_explainer import SHAPExplainer, generate_explanation
