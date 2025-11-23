@@ -3,6 +3,9 @@
 # Optimized for compatibility
 # ============================================
 
+# Build tools (required for Python 3.12+)
+setuptools
+
 # Core Data Science
 pandas==2.0.3
 numpy==1.24.3
