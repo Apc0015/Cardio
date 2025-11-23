@@ -6,7 +6,7 @@
 
 **CardioFusion** is a professional machine learning platform that predicts cardiovascular disease risk using hybrid ensemble models. The platform combines traditional ML algorithms with advanced deep learning to achieve 95%+ ROC-AUC accuracy while providing explainable predictions through SHAP analysis.
 
-🌐 **Live Demo:** [cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app](https://cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app)
+🌐 **Live Demo:** [cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app](https://cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app)
 
 ---
 
