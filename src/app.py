@@ -2,7 +2,7 @@
 CardioFusion Clinical Platform
 Professional Web Application for Cardiovascular Disease Risk Assessment
 
-Author: CardioFusion Development Team
+Author: Ayush Chhoker
 Version: 1.0.0
 """
 
@@ -234,7 +234,7 @@ def render_header():
     st.markdown("""
     <div class="main-header">
         <h1>🩺 CardioFusion Clinical Platform</h1>
-        <p>Advanced AI-Powered Cardiovascular Disease Risk Assessment</p>
+        <p>Advanced Cardiovascular Disease Risk Assessment</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -515,7 +515,7 @@ def render_detailed_prediction(prediction, input_data):
         "🎯 What-If Analysis",
         "📊 Risk Insights",
         "📄 Reports",
-        "🔍 AI Explainability",
+        "🔍 Model Explainability",
         "📚 Education"
     ])
 
@@ -580,7 +580,7 @@ def render_detailed_prediction(prediction, input_data):
             st.warning("Patient data not available for reports")
 
     with tab5:
-        st.markdown("### 🔍 AI Explainability (SHAP Analysis)")
+        st.markdown("### 🔍 Model Explainability (SHAP Analysis)")
 
         # SHAP explanation
         if st.session_state.background_data is not None:
