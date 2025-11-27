@@ -757,6 +757,26 @@ def load_model_results():
         else:
             return None
 
+        # Normalize metric columns to ensure correct display in UI
+        metric_cols = ['Accuracy', 'Precision', 'Recall', 'F1-Score', 'ROC-AUC']
+
+        for col in metric_cols:
+            if col in all_results.columns:
+                # Convert to numeric and coerce errors
+                all_results[col] = pd.to_numeric(all_results[col], errors='coerce')
+
+                # If values appear to be in percentages already (e.g., 95 or '95%'),
+                # convert them to fraction (0-1). Also handle string percentages.
+                # Detect max value to determine scale.
+                if all_results[col].notna().any():
+                    max_val = all_results[col].max()
+                    # If max value looks like percent in [1, 1000], divide by 100
+                    if max_val > 1.0:
+                        all_results[col] = all_results[col] / 100.0
+
+                # Clip values to [0,1]
+                all_results[col] = all_results[col].clip(lower=0.0, upper=1.0)
+
         return all_results
 
     except Exception as e:
