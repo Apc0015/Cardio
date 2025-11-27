@@ -95,7 +95,7 @@ data/processed/test_data.csv
 
 ## Data Sources
 
-- **Primary:** [Cardiovascular Disease Dataset](https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset)
+- **Primary:** [Cardiovascular Disease Dataset](https://www.kaggle.com/datasets/alphiree/cardiovascular-diseases-risk-prediction-dataset/data)
 - **License:** Public domain / Kaggle terms
 - **Citation:** Required for publication
 
