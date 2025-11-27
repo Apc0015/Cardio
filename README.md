@@ -313,13 +313,15 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Authors
 
-- **Ayush Chhoker** - *Primary Developer* - [Apc0015](https://github.com/Apc0015)
+- **Ayush Chhoker** - *Developer* - [Apc0015](https://github.com/Apc0015)
+- **Taylor Hunter** - *Developer* - [Taylor-Hunter](https://github.com/Taylor-Hunter)
+- **Manaswi Thudi** - *Developer* - [thudimanaswi](https://github.com/thudimanaswi)
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Dataset from [Kaggle Cardiovascular Disease Dataset](https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset)
+- Dataset from [Kaggle Cardiovascular Disease Dataset](https://www.kaggle.com/datasets/alphiree/cardiovascular-diseases-risk-prediction-dataset/data)
 - Built with [Streamlit](https://streamlit.io), [scikit-learn](https://scikit-learn.org), [XGBoost](https://xgboost.readthedocs.io), and [TensorFlow](https://www.tensorflow.org)
 - SHAP library for model explainability
 - CDC for cardiovascular health indicators and research
