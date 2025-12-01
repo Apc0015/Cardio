@@ -472,7 +472,7 @@ def render_simple_prediction(prediction):
     """Render simple prediction view"""
 
     risk_pct = prediction['risk_percentage']
-    category, color = st.session_state.predictor.get_risk_category(risk_pct)
+    category, _, color = st.session_state.predictor.get_risk_category(risk_pct)
 
     st.markdown(f"""
     <div class="risk-card risk-{category.split()[0].lower()}">
