@@ -1,4 +1,4 @@
-# 🤖 Models Directory
+# Models Directory
 
 This directory contains all trained machine learning models and preprocessing objects.
 
@@ -6,9 +6,9 @@ This directory contains all trained machine learning models and preprocessing ob
 
 ```
 models/
-├── baseline_models/     # Traditional ML models
-├── advanced_models/     # Deep learning models
-└── preprocessing/       # Scalers, encoders, transformers
+ baseline_models/ # Traditional ML models
+ advanced_models/ # Deep learning models
+ preprocessing/ # Scalers, encoders, transformers
 ```
 
 ## Subdirectories
@@ -48,14 +48,14 @@ Preprocessing objects used for data transformation.
 
 ```
 Raw Patient Data
-    ↓
+ |
 [Preprocessing Objects]
-    ↓
+ |
 Scaled/Encoded Features
-    ↓
-[Baseline Models]     [Advanced Models]
-    ↓                      ↓
-Individual Predictions → [Ensemble] → Final Prediction
+ |
+[Baseline Models] [Advanced Models]
+ | |
+Individual Predictions -> [Ensemble] -> Final Prediction
 ```
 
 ## Loading Models
@@ -100,19 +100,19 @@ scaler = joblib.load('models/preprocessing/scaler.pkl')
 ## Training Models
 
 1. **Preprocess Data First:**
-   ```bash
-   jupyter notebook notebooks/data_preprocessing.ipynb
-   ```
+ ```bash
+ jupyter notebook notebooks/data_preprocessing.ipynb
+ ```
 
 2. **Train Baseline Models:**
-   ```bash
-   jupyter notebook notebooks/baseline_models.ipynb
-   ```
+ ```bash
+ jupyter notebook notebooks/baseline_models.ipynb
+ ```
 
 3. **Train Advanced Models:**
-   ```bash
-   jupyter notebook notebooks/advanced_models.ipynb
-   ```
+ ```bash
+ jupyter notebook notebooks/advanced_models.ipynb
+ ```
 
 ## Important Notes
 

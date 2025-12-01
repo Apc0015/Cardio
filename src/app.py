@@ -31,7 +31,7 @@ from src.utils.shap_explainer import SHAPExplainer
 
 st.set_page_config(
     page_title="CardioFusion | Heart Disease Risk Assessment",
-    page_icon="🩺",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
@@ -206,7 +206,7 @@ def load_models():
             return predictor
         return None
     except Exception as e:
-        st.error(f"❌ Error loading models: {str(e)}")
+        st.error(f" Error loading models: {str(e)}")
         return None
 
 @st.cache_data
@@ -222,7 +222,7 @@ def load_background_data():
         # Sample for SHAP background - reduced sample size
         return X_train.sample(min(50, len(X_train)), random_state=42)
     except Exception as e:
-        print(f"⚠️ Could not load background data for SHAP: {e}")
+        print(f" Could not load background data for SHAP: {e}")
         return None
 
 # ============================================
@@ -233,7 +233,7 @@ def render_header():
     """Render professional header"""
     st.markdown("""
     <div class="main-header">
-        <h1>🩺 CardioFusion Clinical Platform</h1>
+        <h1> CardioFusion Clinical Platform</h1>
         <p>Advanced Cardiovascular Disease Risk Assessment</p>
     </div>
     """, unsafe_allow_html=True)
@@ -241,18 +241,17 @@ def render_header():
 def render_sidebar():
     """Render sidebar navigation and settings"""
     with st.sidebar:
-        st.image("https://img.icons8.com/fluency/96/000000/heart-with-pulse.png", width=80)
         st.title("Navigation")
 
         page = st.radio(
             "Select View:",
-            ["🔮 Risk Assessment", "📊 Model Performance"],
+            [" Risk Assessment", " Model Performance"],
             label_visibility="collapsed"
         )
 
         st.divider()
 
-        st.subheader("⚙️ Settings")
+        st.subheader(" Settings")
         view_mode = st.radio(
             "Prediction Detail Level:",
             ["Simple View", "Detailed Analysis"],
@@ -263,7 +262,7 @@ def render_sidebar():
         st.divider()
 
         st.markdown("""
-        ### 📋 Quick Guide
+        ###  Quick Guide
         1. Enter patient information
         2. Click **Analyze Risk**
         3. Review predictions
@@ -283,7 +282,7 @@ def render_patient_input_form():
 
     with st.container():
         st.markdown('<div class="input-section">', unsafe_allow_html=True)
-        st.markdown('<p class="section-title">👤 Demographic Information</p>', unsafe_allow_html=True)
+        st.markdown('<p class="section-title"> Demographic Information</p>', unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -300,7 +299,7 @@ def render_patient_input_form():
 
     with st.container():
         st.markdown('<div class="input-section">', unsafe_allow_html=True)
-        st.markdown('<p class="section-title">📏 Physical Measurements</p>', unsafe_allow_html=True)
+        st.markdown('<p class="section-title"> Physical Measurements</p>', unsafe_allow_html=True)
 
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -315,7 +314,7 @@ def render_patient_input_form():
 
     with st.container():
         st.markdown('<div class="input-section">', unsafe_allow_html=True)
-        st.markdown('<p class="section-title">🏃 Lifestyle Factors</p>', unsafe_allow_html=True)
+        st.markdown('<p class="section-title"> Lifestyle Factors</p>', unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -335,7 +334,7 @@ def render_patient_input_form():
 
     with st.container():
         st.markdown('<div class="input-section">', unsafe_allow_html=True)
-        st.markdown('<p class="section-title">🏥 Health Status</p>', unsafe_allow_html=True)
+        st.markdown('<p class="section-title"> Health Status</p>', unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -391,7 +390,7 @@ def render_patient_input_form():
 
     return patient_data
 
-def render_risk_gauge(risk_percentage, risk_category, emoji, color):
+def render_risk_gauge(risk_percentage, risk_category, color):
     """Render professional risk gauge visualization"""
 
     fig = go.Figure(go.Indicator(
@@ -435,12 +434,12 @@ def render_feature_contributions(explanation):
     if 'top_positive' not in explanation or 'top_negative' not in explanation:
         return
 
-    st.markdown("### 📊 Feature Contribution Analysis")
+    st.markdown("###  Feature Contribution Analysis")
 
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown("#### 🔴 Risk-Increasing Factors")
+        st.markdown("####  Risk-Increasing Factors")
         for feature, value in explanation['top_positive']:
             bar_width = min(abs(value) * 100, 100)
             feature_name = feature.replace('_', ' ').title()
@@ -455,7 +454,7 @@ def render_feature_contributions(explanation):
             """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("#### 🟢 Risk-Decreasing Factors")
+        st.markdown("####  Risk-Decreasing Factors")
         for feature, value in explanation['top_negative']:
             bar_width = min(abs(value) * 100, 100)
             feature_name = feature.replace('_', ' ').title()
@@ -473,11 +472,11 @@ def render_simple_prediction(prediction):
     """Render simple prediction view"""
 
     risk_pct = prediction['risk_percentage']
-    category, emoji, color = st.session_state.predictor.get_risk_category(risk_pct)
+    category, color = st.session_state.predictor.get_risk_category(risk_pct)
 
     st.markdown(f"""
     <div class="risk-card risk-{category.split()[0].lower()}">
-        <h2 style="color: {color}; margin: 0;">{emoji} {category}</h2>
+        <h2 style="color: {color}; margin: 0;">{category}</h2>
         <p style="font-size: 1.5rem; margin: 1rem 0 0 0; color: #64748b;">
             Risk Score: <strong style="color: {color};">{risk_pct:.1f}%</strong>
         </p>
@@ -493,7 +492,7 @@ def render_simple_prediction(prediction):
         st.metric("Model", "Ensemble")
 
     # Risk gauge
-    st.plotly_chart(render_risk_gauge(risk_pct, category, emoji, color), use_container_width=True)
+    st.plotly_chart(render_risk_gauge(risk_pct, category, color), use_container_width=True)
 
 def render_detailed_prediction(prediction, input_data):
     """Render detailed prediction with multi-tab analysis"""
@@ -511,12 +510,12 @@ def render_detailed_prediction(prediction, input_data):
 
     # Create tabs for different analysis views
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-        "🤖 Model Details",
-        "🎯 What-If Analysis",
-        "📊 Risk Insights",
-        "📄 Reports",
-        "🔍 Model Explainability",
-        "📚 Education"
+        " Model Details",
+        " What-If Analysis",
+        " Risk Insights",
+        " Reports",
+        " Model Explainability",
+        " Education"
     ])
 
     with tab1:
@@ -538,7 +537,7 @@ def render_detailed_prediction(prediction, input_data):
             st.divider()
 
             # Show ensemble calculation
-            st.markdown("### 📊 How Ensemble Works")
+            st.markdown("###  How Ensemble Works")
             st.info("""
             The final risk prediction is a **weighted average** of all individual models.
             Better-performing models receive higher weights in the final prediction.
@@ -580,7 +579,7 @@ def render_detailed_prediction(prediction, input_data):
             st.warning("Patient data not available for reports")
 
     with tab5:
-        st.markdown("### 🔍 Model Explainability (SHAP Analysis)")
+        st.markdown("###  Model Explainability (SHAP Analysis)")
 
         # SHAP explanation
         if st.session_state.background_data is not None:
@@ -590,7 +589,7 @@ def render_detailed_prediction(prediction, input_data):
                     model = list(st.session_state.predictor.models.values())[0]
                     model_name = list(st.session_state.predictor.models.keys())[0]
 
-                    st.info(f"📊 Using {model_name} for SHAP analysis...")
+                    st.info(f" Using {model_name} for SHAP analysis...")
 
                     explainer = SHAPExplainer(model, st.session_state.background_data)
                     explanation = explainer.explain_prediction(input_data)
@@ -601,20 +600,20 @@ def render_detailed_prediction(prediction, input_data):
                         st.divider()
 
                         # Clinical recommendations
-                        st.markdown("### 💡 Clinical Recommendations")
+                        st.markdown("###  Clinical Recommendations")
                         recommendations = explainer.get_recommendations(explanation)
 
                         for i, rec in enumerate(recommendations, 1):
                             st.markdown(f"{i}. {rec}")
                     else:
-                        st.error(f"❌ SHAP Error: {explanation.get('error', 'Unknown error')}")
+                        st.error(f" SHAP Error: {explanation.get('error', 'Unknown error')}")
 
             except Exception as e:
-                st.error(f"❌ SHAP analysis failed: {str(e)}")
+                st.error(f" SHAP analysis failed: {str(e)}")
                 import traceback
                 st.code(traceback.format_exc())
         else:
-            st.warning("⚠️ SHAP explainability not available - background data could not be loaded")
+            st.warning(" SHAP explainability not available - background data could not be loaded")
 
     with tab6:
         render_education_hub()
@@ -623,7 +622,7 @@ def render_disclaimer():
     """Render medical disclaimer"""
     st.markdown("""
     <div class="disclaimer">
-        <strong>⚠️ Medical Disclaimer:</strong><br>
+        <strong> Medical Disclaimer:</strong><br>
         This tool is for educational and informational purposes only. It does not provide medical advice,
         diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider
         with any questions you may have regarding a medical condition. Never disregard professional medical
@@ -649,12 +648,12 @@ def main():
         progress_text = st.empty()
         progress_bar = st.progress(0)
         
-        progress_text.text("🔄 Loading ML models...")
+        progress_text.text(" Loading ML models...")
         progress_bar.progress(30)
         st.session_state.predictor = load_models()
         
         progress_bar.progress(70)
-        progress_text.text("📊 Loading background data...")
+        progress_text.text(" Loading background data...")
         st.session_state.background_data = load_background_data()
         
         progress_bar.progress(100)
@@ -665,20 +664,20 @@ def main():
     render_header()
     page = render_sidebar()
 
-    if page == "🔮 Risk Assessment":
+    if page == " Risk Assessment":
         render_risk_assessment_page()
-    elif page == "📊 Model Performance":
+    elif page == " Model Performance":
         render_performance_page()
 
 def render_risk_assessment_page():
     """Render main risk assessment page"""
 
     if st.session_state.predictor is None:
-        st.error("❌ Models not loaded. Please ensure models are trained and saved.")
-        st.info("💡 Run data_preprocessing.ipynb and baseline_models.ipynb first.")
+        st.error(" Models not loaded. Please ensure models are trained and saved.")
+        st.info(" Run data_preprocessing.ipynb and baseline_models.ipynb first.")
         return
 
-    st.markdown("## 🔮 Patient Risk Assessment")
+    st.markdown("##  Patient Risk Assessment")
 
     # Patient input form
     patient_data = render_patient_input_form()
@@ -686,7 +685,7 @@ def render_risk_assessment_page():
     # Analyze button
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        analyze_button = st.button("🔬 Analyze Risk Profile", use_container_width=True)
+        analyze_button = st.button(" Analyze Risk Profile", use_container_width=True)
 
     if analyze_button:
         # Validate input
@@ -694,7 +693,7 @@ def render_risk_assessment_page():
         is_valid, errors, warnings = validator.validate_input(patient_data)
 
         if not is_valid:
-            st.error("❌ Input Validation Failed:")
+            st.error(" Input Validation Failed:")
             for error in errors:
                 st.error(error)
             return
@@ -710,14 +709,14 @@ def render_risk_assessment_page():
         input_df = validator.preprocess_for_model(patient_data)
 
         # Make prediction
-        with st.spinner("🔄 Analyzing patient data..."):
+        with st.spinner(" Analyzing patient data..."):
             prediction = st.session_state.predictor.predict(input_df)
 
-        st.success("✅ Analysis Complete!")
+        st.success(" Analysis Complete!")
 
         # Render results based on view mode
         st.markdown("---")
-        st.markdown("## 📊 Risk Assessment Results")
+        st.markdown("##  Risk Assessment Results")
 
         if st.session_state.view_mode == 'simple':
             render_simple_prediction(prediction)
@@ -785,7 +784,7 @@ def load_model_results():
 
 def render_performance_overview(results):
     """Render performance overview with key metrics"""
-    st.markdown("### 📈 Performance Overview")
+    st.markdown("###  Performance Overview")
 
     # Key metrics in columns
     col1, col2, col3, col4 = st.columns(4)
@@ -815,7 +814,7 @@ def render_performance_overview(results):
     st.divider()
 
     # Performance comparison chart
-    st.markdown("### 📊 Model Performance Comparison")
+    st.markdown("###  Model Performance Comparison")
 
     # Prepare data for visualization
     metrics_df = results[['Model', 'Accuracy', 'Precision', 'Recall', 'F1-Score', 'ROC-AUC']].copy()
@@ -846,7 +845,7 @@ def render_performance_overview(results):
     st.plotly_chart(fig, use_container_width=True)
 
     # Model recommendations
-    st.markdown("### 🎯 Model Recommendations")
+    st.markdown("###  Model Recommendations")
 
     col1, col2, col3 = st.columns(3)
 
@@ -867,7 +866,7 @@ def render_performance_overview(results):
 
 def render_detailed_metrics(results):
     """Render detailed metrics table"""
-    st.markdown("### 📋 Detailed Performance Metrics")
+    st.markdown("###  Detailed Performance Metrics")
 
     # Format results for display
     display_df = results.copy()
@@ -887,7 +886,7 @@ def render_detailed_metrics(results):
     st.divider()
 
     # Model comparison selector
-    st.markdown("### 🔍 Model Deep Dive")
+    st.markdown("###  Model Deep Dive")
 
     selected_models = st.multiselect(
         "Select models to compare:",
@@ -931,7 +930,7 @@ def render_detailed_metrics(results):
 
 def render_visualizations(results):
     """Render interactive visualizations"""
-    st.markdown("### 📊 Interactive Visualizations")
+    st.markdown("###  Interactive Visualizations")
 
     # Metric selector
     col1, col2 = st.columns([2, 1])
@@ -979,7 +978,7 @@ def render_visualizations(results):
     st.divider()
 
     # Performance heatmap
-    st.markdown("### 🔥 Performance Heatmap")
+    st.markdown("###  Performance Heatmap")
 
     # Prepare data for heatmap
     heatmap_data = results.set_index('Model')[['Accuracy', 'Precision', 'Recall', 'F1-Score', 'ROC-AUC']]
@@ -999,7 +998,7 @@ def render_visualizations(results):
 
 def render_model_comparison(results):
     """Render side-by-side model comparison"""
-    st.markdown("### ⚖️ Side-by-Side Model Comparison")
+    st.markdown("###  Side-by-Side Model Comparison")
 
     # Model selectors
     col1, col2 = st.columns(2)
@@ -1046,7 +1045,7 @@ def render_model_comparison(results):
 
         # Winner summary
         st.divider()
-        st.markdown("### 🏆 Winner Summary")
+        st.markdown("###  Winner Summary")
 
         wins = {model1: 0, model2: 0}
 
@@ -1065,13 +1064,13 @@ def render_model_comparison(results):
 
 def render_performance_page():
     """Render comprehensive model performance page"""
-    st.markdown("## 📊 Model Performance Dashboard")
+    st.markdown("##  Model Performance Dashboard")
 
     # Load results
     results = load_model_results()
 
     if results is None or results.empty:
-        st.warning("⚠️ No model performance data found. Please train models first.")
+        st.warning(" No model performance data found. Please train models first.")
         st.markdown("""
         **To train models and generate performance metrics:**
 
@@ -1088,19 +1087,19 @@ def render_performance_page():
         # Show available models from predictor
         if st.session_state.predictor:
             st.divider()
-            st.markdown("### 🤖 Available Loaded Models")
+            st.markdown("###  Available Loaded Models")
             models = st.session_state.predictor.get_available_models()
             for model in models:
-                st.markdown(f"- ✅ {model}")
+                st.markdown(f"-  {model}")
 
         return
 
     # Create tabs for different views
     tab1, tab2, tab3, tab4 = st.tabs([
-        "📈 Overview",
-        "🎯 Detailed Metrics",
-        "📊 Visualizations",
-        "🔍 Model Comparison"
+        " Overview",
+        " Detailed Metrics",
+        " Visualizations",
+        " Model Comparison"
     ])
 
     with tab1:

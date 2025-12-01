@@ -1,31 +1,31 @@
-# 🩺 CardioFusion: Cardiovascular Disease Risk Assessment
+# CardioFusion: Cardiovascular Disease Risk Assessment
 
 [![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)](https://www.python.org/downloads/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.29+-FF4B4B.svg)](https://streamlit.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**CardioFusion** is a professional machine learning platform that predicts cardiovascular disease risk using hybrid ensemble models. The platform combines traditional ML algorithms with advanced deep learning to achieve 95%+ ROC-AUC accuracy while providing explainable predictions through SHAP analysis.
+**CardioFusion** is a professional machine learning platform that predicts cardiovascular disease risk using hybrid ensemble models. The platform combines traditional ML algorithms with advanced deep learning to achieve high accuracy while providing explainable predictions through SHAP analysis.
 
-🌐 **Live Demo:** [cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app](https://cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app)
-
----
-
-## ✨ Key Features
-
-- 🎯 **Hybrid Ensemble Models** - 6 ML algorithms working together for superior accuracy (95.19% ROC-AUC)
-- 📊 **Interactive Web Interface** - Professional Streamlit app for real-time predictions
-- 🔍 **SHAP Explainability** - Visual explanations showing which factors drive predictions
-- 📈 **Comprehensive Analytics** - Model performance metrics and comparisons
-- ⚡ **Cloud Deployment** - Production-ready on Streamlit Cloud with Git LFS
-- 🏥 **Clinical Focus** - Designed for healthcare professionals with actionable insights
+**Live Demo:** [cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app](https://cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app)
 
 ---
 
-## 🚀 Quick Start
+## Key Features
 
-### Option 1: Use the Live App (Fastest)
+- **Hybrid Ensemble Models** - Multiple ML algorithms working together for superior accuracy
+- **Interactive Web Interface** - Professional Streamlit app for real-time predictions
+- **SHAP Explainability** - Visual explanations showing which factors drive predictions
+- **Comprehensive Analytics** - Model performance metrics and comparisons
+- **Cloud Deployment** - Production-ready on Streamlit Cloud with Git LFS
+- **Clinical Focus** - Designed for healthcare professionals with actionable insights
 
-Visit **[cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app](https://cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app)** to use the deployed application immediately.
+---
+
+## Quick Start
+
+### Option 1: Use the Live App
+
+Visit [cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app](https://cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app) to use the deployed application immediately.
 
 ### Option 2: Run Locally
 
@@ -36,7 +36,7 @@ cd Cardio
 
 # Create and activate virtual environment
 python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -49,55 +49,48 @@ Visit **http://localhost:8501** in your browser.
 
 ---
 
-## 📋 Project Structure
+## Project Structure
 
 ```
 Cardio/
-├── src/                          # Application source code
-│   ├── app.py                   # Main Streamlit application
-│   └── utils/                   # Utility modules
-│       ├── model_utils.py       # Model loading and prediction
-│       ├── data_validator.py    # Input validation
-│       └── shap_explainer.py    # Model explainability
-│
+├── src/
+│   └── app.py                   # Main Streamlit application
 ├── models/                       # Trained ML models (Git LFS)
 │   ├── baseline_models/         # Logistic Regression, Decision Tree, Random Forest
 │   ├── advanced_models/         # XGBoost, Neural Network, Hybrid Ensemble
 │   └── preprocessing/           # Scalers and encoders
-│
 ├── data/                         # Dataset files (Git LFS)
 │   ├── raw/                     # Original cardiovascular dataset
 │   └── processed/               # Cleaned and preprocessed data
-│
 ├── notebooks/                    # Jupyter notebooks
 │   ├── data_preprocessing.ipynb # Data cleaning and feature engineering
 │   ├── baseline_models.ipynb    # Traditional ML models
 │   └── advanced_models.ipynb    # Advanced models and ensembles
-│
 ├── requirements.txt             # Python dependencies
-├── packages.txt                 # System packages for deployment
-└── HIGH_LEVEL_DOCUMENT.md       # Architecture and design documentation
+└── packages.txt                 # System packages for deployment
 ```
 
 ---
 
-## 📊 Model Performance
+## Model Performance
+
+Based on actual test results:
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 |-------|----------|-----------|--------|----------|---------|
-| **Decision Tree** | **87.76%** | **89.84%** | 85.15% | **87.43%** | **95.19%** |
-| Random Forest | 84.08% | 80.92% | **89.18%** | 84.85% | 92.47% |
-| XGBoost | 86.50% | 88.20% | 84.80% | 86.45% | 94.10% |
-| Logistic Regression | 80.11% | 79.37% | 81.37% | 80.35% | 88.68% |
-| Neural Network | 83.20% | 81.50% | 85.90% | 83.65% | 91.30% |
-| **Hybrid Ensemble** | **87%+** | **89%+** | **87%+** | **88%+** | **95%+** |
+| **XGBoost** | **95.34%** | **98.93%** | 91.67% | **95.16%** | **98.61%** |
+| **Hybrid Ensemble** | **91.45%** | 90.53% | **92.58%** | **91.55%** | **97.66%** |
+| Logistic Regression | 83.94% | 84.81% | 82.70% | 83.74% | 92.61% |
+| Random Forest | 83.40% | 80.16% | 88.76% | 84.24% | 91.75% |
+| Neural Network | 83.32% | 85.11% | 80.79% | 82.89% | 92.18% |
+| Decision Tree | 82.10% | 82.91% | 80.88% | 81.88% | 90.80% |
 
-**Dataset:** 567,606 samples (50/50 balanced with SMOTE)  
+**Dataset:** 567,606 samples (50/50 balanced with SMOTE)
 **Train/Test Split:** 80/20 (454,084 / 113,522 samples)
 
 ---
 
-## 🔬 How It Works
+## How It Works
 
 ### 1. Data Input
 Patients or healthcare providers enter 17 health parameters including:
@@ -139,10 +132,10 @@ SHAP analysis reveals:
 
 ---
 
-## 🌐 Streamlit Cloud Deployment
+## Streamlit Cloud Deployment
 
 ### Current Deployment
-- **Live URL:** https://cardio-diw5n4p5cxzeexqitpuzyt.streamlit.app
+- **Live URL:** https://cardio-7ju34z7mh8sbn8fddyj2p8.streamlit.app
 - **Platform:** Streamlit Community Cloud
 - **Python Version:** 3.13
 - **Auto-deploy:** Enabled on push to `main` branch
@@ -198,11 +191,7 @@ git add .
 git commit -m "Update: description"
 git push origin main
 
-# Streamlit Cloud automatically:
-# 1. Detects the push
-# 2. Pulls latest code
-# 3. Reinstalls dependencies if changed
-# 4. Redeploys application (~3-5 minutes)
+# Streamlit Cloud automatically redeploys (~3-5 minutes)
 ```
 
 ### Resource Limits (Free Tier)
@@ -213,18 +202,9 @@ git push origin main
 - **Monthly hours:** Unlimited
 - **Apps per account:** 1 public app
 
-### Monitoring Your Deployment
-
-From Streamlit Cloud dashboard:
-- View real-time logs
-- Monitor resource usage
-- Track visitor analytics
-- Manage deployment settings
-- Restart or reboot app
-
 ---
 
-## 🛠️ Development
+## Development
 
 ### Local Setup with Jupyter
 
@@ -242,45 +222,31 @@ jupyter lab
 - `baseline_models.ipynb` - Traditional ML model training
 - `advanced_models.ipynb` - Advanced models and ensemble
 
-### Running Tests
-
-```bash
-# Run prediction accuracy tests
-python tests/test_prediction_accuracy.py
-```
-
-**Test Coverage:**
-- ✅ Low-risk patient prediction
-- ✅ High-risk patient prediction
-- ✅ Moderate-risk patient prediction
-- ✅ Feature scaling validation
-- ✅ Prediction range validation
-
 ### Code Quality
 
 ```bash
 # Format code
-black src/ tests/
+black src/
 
 # Type checking
 mypy src/
 
 # Linting
-flake8 src/ tests/
+flake8 src/
 ```
 
 ---
 
-## 📖 Documentation
+## Documentation
 
 - **README.md** (this file) - Quick start and deployment guide
-- **HIGH_LEVEL_DOCUMENT.md** - Architecture, requirements, and design
-- **requirements.txt** - Python package dependencies
+- **data/README.md** - Data directory documentation
+- **models/README.md** - Models directory documentation
 - **notebooks/** - Interactive Jupyter notebooks with detailed workflows
 
 ---
 
-## 🔐 Privacy & Security
+## Privacy & Security
 
 - **No Data Storage:** Patient data is processed in-memory only
 - **Session Isolation:** Each user session is independent
@@ -293,7 +259,7 @@ flake8 src/ tests/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please:
 
@@ -305,13 +271,13 @@ Contributions are welcome! Please:
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
 
-## 👥 Authors
+## Authors
 
 - **Ayush Chhoker** - *Developer* - [Apc0015](https://github.com/Apc0015)
 - **Taylor Hunter** - *Developer* - [Taylor-Hunter](https://github.com/Taylor-Hunter)
@@ -319,7 +285,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Dataset from [Kaggle Cardiovascular Disease Dataset](https://www.kaggle.com/datasets/alphiree/cardiovascular-diseases-risk-prediction-dataset/data)
 - Built with [Streamlit](https://streamlit.io), [scikit-learn](https://scikit-learn.org), [XGBoost](https://xgboost.readthedocs.io), and [TensorFlow](https://www.tensorflow.org)
@@ -328,17 +294,16 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-## 📞 Support
+## Support
 
 - **Issues:** [GitHub Issues](https://github.com/Apc0015/Cardio/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/Apc0015/Cardio/discussions)
-- **Documentation:** See `HIGH_LEVEL_DOCUMENT.md` for technical details
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
-### Completed ✅
+### Completed
 - [x] Hybrid ensemble model development
 - [x] SHAP explainability integration
 - [x] Professional Streamlit interface
@@ -346,7 +311,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [x] Git LFS for model storage
 - [x] Comprehensive testing suite
 
-### Planned 🔮
+### Planned
 - [ ] Multi-language support (i18n)
 - [ ] Batch prediction via CSV upload
 - [ ] REST API endpoint
@@ -358,4 +323,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-**Made with ❤️ for better cardiovascular health outcomes**
+**Made for better cardiovascular health outcomes**

@@ -1,4 +1,4 @@
-# 📊 Data Directory
+# Data Directory
 
 This directory contains all datasets used in the CardioFusion project.
 
@@ -6,9 +6,8 @@ This directory contains all datasets used in the CardioFusion project.
 
 ```
 data/
-├── raw/              # Original, immutable data
-├── processed/        # Cleaned and preprocessed data
-└── external/         # External reference data
+ raw/              # Original, immutable data
+ processed/        # Cleaned and preprocessed data
 ```
 
 ## Subdirectories
@@ -32,25 +31,19 @@ Contains cleaned, engineered, and transformed datasets.
 - `train_data.csv` - Training split (80%)
 - `test_data.csv` - Testing split (20%)
 
-### `external/`
-Contains external reference datasets or supplementary data.
-- Medical reference ranges
-- Population statistics
-- Clinical guidelines data
-
 ## Data Pipeline
 
 ```
 Raw Data (Kaggle)
-    ↓
+ |
 data/raw/cardio_train.csv
-    ↓
+ |
 [Data Preprocessing]
-    ↓
+ |
 data/processed/CVD_Cleaned.csv
-    ↓
+ |
 [Train-Test Split]
-    ↓
+ |
 data/processed/train_data.csv
 data/processed/test_data.csv
 ```
@@ -58,20 +51,20 @@ data/processed/test_data.csv
 ## Getting Started
 
 1. **Download Data:**
-   ```bash
-   python scripts/download_data.py
-   ```
+ ```bash
+ python scripts/download_data.py
+ ```
 
 2. **Preprocess Data:**
-   ```bash
-   jupyter notebook notebooks/data_preprocessing.ipynb
-   ```
+ ```bash
+ jupyter notebook notebooks/data_preprocessing.ipynb
+ ```
 
 3. **Verify Files:**
-   ```bash
-   ls -la data/raw/
-   ls -la data/processed/
-   ```
+ ```bash
+ ls -la data/raw/
+ ls -la data/processed/
+ ```
 
 ## Data Schema
 
