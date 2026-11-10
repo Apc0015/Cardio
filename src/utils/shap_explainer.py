@@ -3,7 +3,12 @@ SHAP Explainability Module - CardioFusion Clinical Platform
 Provides interpretable model explanations for predictions
 """
 
-import shap
+try:
+    import shap
+    SHAP_AVAILABLE = True
+except ImportError:
+    shap = None
+    SHAP_AVAILABLE = False
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -34,6 +39,8 @@ class SHAPExplainer:
 
     def _create_explainer(self):
         """Create appropriate SHAP explainer for model type - optimized for speed"""
+        if not SHAP_AVAILABLE:
+            return None
         model_type = type(self.model).__name__
 
         try:
